@@ -1,0 +1,21 @@
+AI Ascent curriculum content
+Copyright (c) 2026 Shivank Shridhar
+
+The curriculum content in this repository (hub/curriculum.js, the lesson text,
+puzzles, exercises, diagrams and the documents in docs/) is licensed under the
+Creative Commons Attribution 4.0 International licence (CC BY 4.0).
+
+You are free to share and adapt it for any purpose, including commercially, as
+long as you give appropriate credit, link to the licence, and indicate if you
+made changes. A suggested credit line:
+
+    Based on AI Ascent by Shivank Shridhar
+    (https://github.com/tandava-1/claude-learning-ai-ascent), CC BY 4.0.
+
+Full licence text: https://creativecommons.org/licenses/by/4.0/legalcode
+
+The code (hub/index.html, the skills and the starter script) is licensed
+separately under the MIT licence; see LICENSE.
+
+Linked readings, videos and papers belong to their own authors and are not
+covered by either licence.

@@ -1,0 +1,1219 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1"><style>:root{color-scheme:light}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>AI Ascent</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700;12..96,800&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --paper:#F6F5F0; --surface:#FFFFFF; --surface-2:#EFEDE6; --ink:#16202B; --ink-2:#5A6572; --ink-3:#8A93A0; --rule:#DAD8CF; --rule-2:#E8E6DE;
+  --accent:#0E5A8A; --accent-ink:#FFFFFF; --accent-soft:#E3EEF6; --warm:#C2591B; --warm-soft:#F8E8DC;
+  --k:#0E5A8A; --k-soft:#E3EEF6; --r:#3C7A48; --r-soft:#E4F0E5; --x:#8A3568; --x-soft:#F3E3EC;
+  --good:#2E7D4F; --warn:#B7791F; --bad:#B23A3A;
+  --shadow:0 1px 2px rgba(22,32,43,.06), 0 8px 24px -12px rgba(22,32,43,.18);
+  --display:"Bricolage Grotesque", "Helvetica Neue", Arial, sans-serif;
+  --body:"Source Serif 4", Georgia, "Times New Roman", serif;
+  --mono:"IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#0E1218; --surface:#161B23; --surface-2:#1C222C; --ink:#E7E8E3; --ink-2:#A1A8B3; --ink-3:#6F7885; --rule:#29303B; --rule-2:#222933;
+    --accent:#74B7E9; --accent-ink:#0B1520; --accent-soft:#16283A; --warm:#EC9A5C; --warm-soft:#33241A;
+    --k:#74B7E9; --k-soft:#16283A; --r:#86C495; --r-soft:#182A1E; --x:#D48FBD; --x-soft:#2E1A28;
+    --good:#6CC08B; --warn:#E0B25A; --bad:#E07A7A;
+    --shadow:0 1px 2px rgba(0,0,0,.3), 0 8px 24px -12px rgba(0,0,0,.6);
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0E1218; --surface:#161B23; --surface-2:#1C222C; --ink:#E7E8E3; --ink-2:#A1A8B3; --ink-3:#6F7885; --rule:#29303B; --rule-2:#222933;
+  --accent:#74B7E9; --accent-ink:#0B1520; --accent-soft:#16283A; --warm:#EC9A5C; --warm-soft:#33241A;
+  --k:#74B7E9; --k-soft:#16283A; --r:#86C495; --r-soft:#182A1E; --x:#D48FBD; --x-soft:#2E1A28;
+  --good:#6CC08B; --warn:#E0B25A; --bad:#E07A7A;
+  --shadow:0 1px 2px rgba(0,0,0,.3), 0 8px 24px -12px rgba(0,0,0,.6);
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.55;padding-inline:clamp(16px,3vw,32px);padding-block:0 64px}
+a{color:var(--accent);text-decoration-thickness:1px;text-underline-offset:2px}
+a:hover{text-decoration-thickness:2px}
+button{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+h1,h2,h3,h4{font-family:var(--display);line-height:1.15;text-wrap:balance;margin:0}
+h1{font-size:clamp(26px,3.4vw,38px);font-weight:800;letter-spacing:-.01em}
+h2{font-size:clamp(22px,2.4vw,28px);font-weight:700;letter-spacing:-.01em}
+h3{font-size:19px;font-weight:700}
+h4{font-size:17px;font-weight:700}
+.mono{font-family:var(--mono);font-size:12.5px;letter-spacing:.02em}
+.eyebrow{font-family:var(--mono);font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-2)}
+.muted{color:var(--ink-2)}
+.small{font-size:14.5px}
+.num{font-variant-numeric:tabular-nums}
+p{margin:0 0 1em}
+.prose{max-width:68ch}
+.prose p{margin:0 0 1.05em}
+.prose ul,.prose ol{padding-left:1.4em;margin:0 0 1.05em}
+.prose li{margin:.25em 0}
+.prose h5{font-family:var(--display);font-size:16px;margin:1.2em 0 .4em}
+.prose code{font-family:var(--mono);font-size:.88em;background:var(--surface-2);padding:.05em .35em;border-radius:3px}
+.prose strong{font-weight:600}
+/* masthead */
+.mast{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:12px 24px;padding-block:22px 14px;border-bottom:1px solid var(--rule)}
+.brand{display:flex;flex-direction:column;gap:4px}
+.brand .name{font-family:var(--display);font-weight:800;font-size:28px;letter-spacing:-.02em;line-height:1}
+.brand .sub{color:var(--ink-2);font-size:15px}
+.meter{display:flex;flex-direction:column;gap:6px;min-width:min(340px,100%)}
+.meter .row{display:flex;justify-content:space-between;gap:12px;font-family:var(--mono);font-size:12.5px;color:var(--ink-2)}
+.bar{height:8px;background:var(--surface-2);border:1px solid var(--rule);border-radius:999px;overflow:hidden}
+.bar > i{display:block;height:100%;background:linear-gradient(90deg,var(--k),var(--warm));width:0%;transition:width .5s ease}
+nav.tabs{display:flex;gap:2px;overflow-x:auto;padding-block:10px;border-bottom:1px solid var(--rule);scrollbar-width:none;position:sticky;top:0;background:var(--paper);z-index:5}
+nav.tabs::-webkit-scrollbar{display:none}
+nav.tabs a{font-family:var(--display);font-weight:600;font-size:15px;color:var(--ink-2);text-decoration:none;padding:8px 12px;border-radius:6px;white-space:nowrap}
+nav.tabs a:hover{background:var(--surface-2);color:var(--ink)}
+nav.tabs a[aria-current="page"]{background:var(--ink);color:var(--paper)}
+nav.tabs .spacer{flex:1}
+nav.tabs .status{align-self:center;font-family:var(--mono);font-size:11.5px;color:var(--ink-3);white-space:nowrap;padding-right:6px}
+main{padding-block:26px}
+/* generic components */
+.card{background:var(--surface);border:1px solid var(--rule);border-radius:10px;padding:18px 20px}
+.card.raised{box-shadow:var(--shadow)}
+.grid{display:grid;gap:16px}
+.grid > *{min-width:0}
+.col{display:grid;gap:16px;grid-template-columns:minmax(0,1fr);min-width:0}
+.grid.two{grid-template-columns:repeat(auto-fit,minmax(min(320px,100%),1fr))}
+.grid.three{grid-template-columns:repeat(auto-fit,minmax(min(260px,100%),1fr))}
+.chip{display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:11.5px;letter-spacing:.04em;padding:3px 9px;border-radius:999px;border:1px solid var(--rule);color:var(--ink-2);background:var(--surface)}
+.chip.k{border-color:transparent;background:var(--k-soft);color:var(--k)}
+.chip.r{border-color:transparent;background:var(--r-soft);color:var(--r)}
+.chip.x{border-color:transparent;background:var(--x-soft);color:var(--x)}
+.chip.warm{border-color:transparent;background:var(--warm-soft);color:var(--warm)}
+.btn{display:inline-flex;align-items:center;gap:8px;font-family:var(--display);font-weight:600;font-size:14.5px;padding:8px 14px;border-radius:8px;border:1px solid var(--rule);background:var(--surface);cursor:pointer;color:var(--ink)}
+.btn:hover{border-color:var(--ink-3)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn.primary:hover{filter:brightness(1.05)}
+.btn.small{font-size:13px;padding:5px 10px}
+.btn[disabled]{opacity:.55;cursor:default}
+.btn.done{background:var(--r-soft);border-color:transparent;color:var(--r)}
+input[type=text],input[type=date],input[type=number],textarea,select{font:inherit;font-size:15px;color:var(--ink);background:var(--surface);border:1px solid var(--rule);border-radius:8px;padding:8px 10px;width:100%}
+textarea{min-height:90px;resize:vertical;font-family:var(--body)}
+label.f{display:flex;flex-direction:column;gap:5px;font-size:13.5px;color:var(--ink-2);font-family:var(--display)}
+.check{display:flex;align-items:flex-start;gap:10px;padding:8px 0;border-top:1px solid var(--rule-2);cursor:pointer}
+.check:first-child{border-top:0}
+.check input{margin-top:5px;accent-color:var(--accent);width:16px;height:16px;flex:none}
+.check.on span{color:var(--ink-3);text-decoration:line-through}
+.empty{padding:28px 20px;border:1px dashed var(--rule);border-radius:10px;color:var(--ink-2);text-align:center}
+.toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);background:var(--ink);color:var(--paper);font-family:var(--display);font-size:14px;padding:10px 16px;border-radius:8px;box-shadow:var(--shadow);opacity:0;pointer-events:none;transition:opacity .25s;z-index:20}
+.toast.show{opacity:1}
+/* today */
+.today-head{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:8px 24px;margin-bottom:18px}
+.daycount{font-family:var(--display);font-weight:800;font-size:clamp(34px,5vw,54px);letter-spacing:-.02em;line-height:1}
+.daycount small{font-size:.42em;font-weight:600;color:var(--ink-2);letter-spacing:0}
+.unit{border-left:4px solid var(--warm);padding-left:16px}
+.streak{display:flex;gap:4px;margin-top:8px}
+.streak i{width:14px;height:14px;border-radius:3px;background:var(--surface-2);border:1px solid var(--rule)}
+.streak i.on{background:var(--warm);border-color:var(--warm)}
+.streak i.today{outline:2px solid var(--ink);outline-offset:1px}
+.week{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
+.week > div{background:var(--surface);border:1px solid var(--rule);border-radius:8px;padding:8px;font-size:13px;min-width:0}
+.week > div.now{border-color:var(--warm);background:var(--warm-soft)}
+.week .d{font-family:var(--mono);font-size:11px;color:var(--ink-2);letter-spacing:.06em}
+.week .u{font-family:var(--display);font-weight:600;font-size:13px;margin-top:2px;line-height:1.2}
+.week .h{font-family:var(--mono);font-size:11px;color:var(--ink-3);margin-top:2px}
+@media (max-width:640px){.week{grid-template-columns:repeat(4,1fr)}}
+/* curriculum layout */
+.curr{display:grid;grid-template-columns:260px minmax(0,1fr);gap:28px;align-items:start}
+@media (max-width:900px){.curr{grid-template-columns:minmax(0,1fr)}}
+.curr > article{min-width:0}
+.rail{position:sticky;top:56px;max-height:calc(100vh - 72px);overflow:auto;padding-right:6px}
+@media (max-width:900px){.rail{position:static;max-height:none;display:flex;gap:8px;overflow-x:auto;padding-bottom:8px;scrollbar-width:thin}}
+.rail a{display:grid;grid-template-columns:52px 1fr;gap:10px;align-items:start;padding:8px 8px;border-radius:8px;text-decoration:none;color:var(--ink);border-left:2px solid transparent}
+@media (max-width:900px){.rail a{grid-template-columns:1fr;min-width:170px;border-left:0;border:1px solid var(--rule);background:var(--surface)}}
+.rail a:hover{background:var(--surface-2)}
+.rail a.on{background:var(--surface);border-left-color:var(--warm);box-shadow:var(--shadow)}
+@media (max-width:900px){.rail a.on{border-color:var(--warm)}}
+.rail .alt{font-family:var(--mono);font-size:12px;color:var(--ink-2);padding-top:3px}
+.rail .t{font-family:var(--display);font-weight:600;font-size:13.5px;line-height:1.25}
+.rail .w{font-family:var(--mono);font-size:11px;color:var(--ink-3);margin-top:2px;display:flex;gap:6px;align-items:center}
+.dots{display:inline-flex;gap:2px}
+.dots i{width:6px;height:6px;border-radius:50%;background:var(--rule)}
+.dots i.on{background:var(--r)}
+.mod-head{padding-bottom:18px;border-bottom:1px solid var(--rule);margin-bottom:8px}
+.mod-head .kicker{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:10px}
+.mod-head .tag{font-size:19px;color:var(--ink-2);font-style:italic;max-width:68ch;margin-top:8px}
+.hours{display:flex;flex-wrap:wrap;gap:6px 14px;margin-top:12px;font-family:var(--mono);font-size:12px;color:var(--ink-2)}
+.hours b{color:var(--ink);font-weight:500}
+.sect{padding-block:26px;border-bottom:1px solid var(--rule-2)}
+.sect:last-child{border-bottom:0}
+.sect > .eyebrow{margin-bottom:6px}
+.sect h2{margin-bottom:12px}
+.sect.r h2, .sect.r .eyebrow{color:var(--r)}
+.sect.x h2, .sect.x .eyebrow{color:var(--x)}
+.sect.r .eyebrow,.sect.x .eyebrow{opacity:.9}
+.subnav{display:flex;flex-wrap:wrap;gap:6px;margin:14px 0 4px}
+.subnav a{font-family:var(--mono);font-size:11.5px;letter-spacing:.04em;color:var(--ink-2);text-decoration:none;padding:4px 9px;border:1px solid var(--rule);border-radius:999px;background:var(--surface)}
+.subnav a:hover{color:var(--ink);border-color:var(--ink-3)}
+.timeline{list-style:none;padding:0;margin:0;display:grid;gap:8px;max-width:76ch}
+.timeline li{display:grid;grid-template-columns:78px minmax(0,1fr);gap:12px;align-items:baseline}
+.timeline .y{font-family:var(--mono);font-size:13px;color:var(--warm);font-weight:500}
+.readings{list-style:none;padding:0;margin:0;display:grid;gap:10px}
+.readings li{display:grid;grid-template-columns:auto minmax(0,1fr);gap:12px;align-items:start;padding:10px 12px;border:1px solid var(--rule);border-radius:8px;background:var(--surface)}
+.readings .kind{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;padding:3px 7px;border-radius:4px;background:var(--surface-2);color:var(--ink-2);margin-top:3px;min-width:58px;text-align:center}
+.readings .t{font-family:var(--display);font-weight:600;font-size:15.5px}
+.readings .by{font-size:14px;color:var(--ink-2)}
+.readings .note{font-size:14.5px;margin-top:3px}
+.readings .time{font-family:var(--mono);font-size:11.5px;color:var(--ink-3)}
+.steps{counter-reset:s;list-style:none;padding:0;margin:0;display:grid;gap:10px;max-width:76ch}
+.steps li{counter-increment:s;display:grid;grid-template-columns:34px minmax(0,1fr);gap:10px;align-items:start}
+.steps li::before{content:counter(s);font-family:var(--display);font-weight:700;font-size:15px;width:28px;height:28px;border-radius:50%;background:var(--k-soft);color:var(--k);display:flex;align-items:center;justify-content:center;margin-top:1px}
+.callout{border:1px solid var(--rule);border-left:4px solid var(--warm);background:var(--surface);border-radius:8px;padding:12px 16px;margin:14px 0;max-width:76ch}
+.callout .eyebrow{margin-bottom:4px}
+.callout.purpose{border-left-color:var(--warm);background:var(--warm-soft);font-size:16.5px;max-width:76ch;margin:16px 0 4px}
+.primer{display:grid;grid-template-columns:30px minmax(0,1fr);gap:10px;padding:12px 0;border-top:1px solid var(--rule-2)}
+.primer .pn{font-family:var(--display);font-weight:800;font-size:18px;color:var(--warm)}
+.primer .ex{padding:8px 10px;border-radius:8px;background:var(--surface-2)}
+.callout.plain{border-left-color:var(--k);background:var(--k-soft);font-size:16.5px;max-width:76ch}
+.example{border:1px solid var(--rule);border-radius:10px;background:var(--surface);padding:16px 18px;margin-bottom:14px;max-width:80ch}
+.example h3{margin:2px 0 10px}
+.example .setup{padding:10px 12px;border-radius:8px;background:var(--surface-2);font-size:15.5px;margin-bottom:10px}
+.example .setup .eyebrow,.example .what-changed .eyebrow{display:block;margin-bottom:3px}
+.exsteps{padding-left:1.4em;margin:0 0 10px;font-size:15.5px;font-variant-numeric:tabular-nums}
+.exsteps li{margin:.35em 0}
+.example .what-changed{padding:10px 12px;border-radius:8px;background:var(--warm-soft);font-size:15.5px}
+.tbl-wrap{overflow-x:auto;margin:6px 0 12px}
+.tbl{border-collapse:collapse;font-family:var(--mono);font-size:12.5px;min-width:320px}
+.tbl th,.tbl td{border:1px solid var(--rule);padding:5px 9px;text-align:left;white-space:nowrap}
+.tbl th{background:var(--surface-2);font-weight:500;color:var(--ink-2)}
+.puzzle{border:1px solid var(--rule);border-radius:10px;background:var(--surface);padding:14px 16px;margin-bottom:12px;max-width:80ch}
+.puzzle .q{font-family:var(--display);font-weight:600;font-size:16px;margin-bottom:8px}
+.puzzle .row{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.puzzle .hint,.puzzle .ans{margin-top:10px;padding:10px 12px;border-radius:8px;font-size:15.5px}
+.puzzle .hint{background:var(--surface-2)}
+.puzzle .ans{background:var(--k-soft)}
+.puzzle .check{border:0;padding:0;display:block;margin-top:10px;cursor:default}
+.puzzle .verdict{margin-top:8px;padding:10px 12px;border-radius:8px;background:var(--r-soft);font-size:15px;white-space:pre-wrap}
+.puzzle .thread{margin-top:2px}
+.puzzle .mine{margin-top:8px;margin-left:auto;max-width:90%;padding:8px 12px;border-radius:8px;background:var(--surface-2);font-size:15px;white-space:pre-wrap}
+.puzzle .followup{margin-top:10px}
+.puzzle .followup .eyebrow{display:block;margin-bottom:4px}
+.forecast{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px;align-items:start;padding:12px 14px;border:1px solid var(--rule);border-radius:8px;background:var(--surface);margin-bottom:10px;max-width:80ch}
+.forecast .q{font-size:15.5px}
+.forecast .meta{font-family:var(--mono);font-size:11.5px;color:var(--ink-3);margin-top:4px;display:flex;flex-wrap:wrap;gap:10px}
+.forecast .ctl{display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+.forecast .ctl input[type=number]{width:74px;padding:6px 8px;font-family:var(--mono)}
+.forecast .p{font-family:var(--display);font-weight:800;font-size:22px;letter-spacing:-.01em}
+.forecast .res{font-family:var(--mono);font-size:11.5px;padding:3px 8px;border-radius:999px}
+.forecast .res.yes{background:var(--r-soft);color:var(--r)}
+.forecast .res.no{background:var(--warm-soft);color:var(--warm)}
+.forecast .res.open{background:var(--surface-2);color:var(--ink-2)}
+@media (max-width:560px){.forecast{grid-template-columns:1fr}.forecast .ctl{justify-content:flex-start}}
+.people{list-style:none;padding:0;margin:0;display:grid;gap:6px;max-width:76ch}
+.people li{display:grid;grid-template-columns:minmax(120px,220px) minmax(0,1fr);gap:10px;font-size:15px}
+.people b{font-family:var(--display);font-weight:600}
+.applied{list-style:none;padding:0;margin:0;display:grid;gap:8px;max-width:76ch}
+.applied li{padding-left:14px;border-left:2px solid var(--r-soft)}
+.stat{display:flex;flex-direction:column;gap:2px}
+.stat .v{font-family:var(--display);font-weight:800;font-size:30px;letter-spacing:-.02em;line-height:1}
+.stat .l{font-family:var(--mono);font-size:11.5px;color:var(--ink-2);letter-spacing:.06em;text-transform:uppercase}
+.digest{border:1px solid var(--rule);border-radius:10px;background:var(--surface);padding:16px 20px;margin-bottom:14px}
+.digest summary{cursor:pointer;list-style:none;display:flex;flex-wrap:wrap;gap:6px 14px;align-items:baseline}
+.digest summary::-webkit-details-marker{display:none}
+.digest summary .t{font-family:var(--display);font-weight:700;font-size:18px}
+.digest summary .sum{flex-basis:100%;color:var(--ink-2);font-size:15px}
+.digest .body{margin-top:14px;padding-top:14px;border-top:1px solid var(--rule-2)}
+.digest .body h3,.digest .body h4{margin:1.1em 0 .4em}
+.digest .src{font-size:13.5px;color:var(--ink-2);margin-top:12px}
+.sample-out{margin-top:10px;padding:12px 14px;border-radius:8px;background:var(--surface-2);font-size:15.5px;white-space:pre-wrap;max-width:76ch}
+.kv{display:grid;grid-template-columns:auto minmax(0,1fr);gap:6px 14px;font-size:15px;max-width:76ch}
+.kv dt{font-family:var(--mono);font-size:12px;color:var(--ink-2);padding-top:3px}
+.kv dd{margin:0}
+.ritual{display:grid;grid-template-columns:auto minmax(0,1fr);gap:12px;padding:10px 0;border-top:1px solid var(--rule-2)}
+.ritual:first-child{border-top:0}
+.ritual b{font-family:var(--display);font-weight:700;white-space:nowrap}
+pre.code{max-width:100%;font-family:var(--mono);font-size:12.5px;background:var(--surface-2);border:1px solid var(--rule);border-radius:8px;padding:12px 14px;overflow-x:auto;white-space:pre}
+@media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
+.selbtn{position:absolute;z-index:30;font-family:var(--display);font-weight:600;font-size:13px;padding:6px 11px;border-radius:8px;border:1px solid var(--accent);background:var(--accent);color:var(--accent-ink);box-shadow:var(--shadow);cursor:pointer}
+.note{background:var(--surface);border:1px solid var(--rule);border-radius:10px;padding:14px 18px;margin-bottom:12px;max-width:90ch}
+.note-meta{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:8px}
+.note-text{margin:0 0 10px;padding:6px 0 6px 14px;border-left:3px solid var(--warm);font-size:15.5px}
+.note-text p{margin:0 0 .6em}
+.note-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.bmk{position:relative}
+.bm-btn{position:absolute;right:6px;top:4px;opacity:0;border:0;background:var(--surface);border-radius:6px;padding:2px 5px;font-size:13px;cursor:pointer;line-height:1;transition:opacity .15s;z-index:2}
+.bmk:hover > .bm-btn,.bm-btn:focus-visible{opacity:.9}
+@media (hover:none){.bm-btn{opacity:.5}}
+.bm-on{box-shadow:inset 4px 0 0 var(--warm);background:var(--warm-soft)}
+.bm-on > .bm-btn{opacity:1}
+.bm-banner{max-width:76ch}
+.today-grid{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(0,1fr);gap:16px;align-items:start}
+@media (max-width:860px){.today-grid{grid-template-columns:minmax(0,1fr)}}
+.today-grid .col{display:grid;gap:16px;min-width:0}
+.plan-head{display:flex;flex-wrap:wrap;gap:10px 18px;justify-content:space-between;align-items:flex-end;margin-bottom:10px}
+.plan-meter{min-width:170px;display:grid;gap:4px}
+ul.tasks{list-style:none;margin:0;padding:0;display:grid;gap:0}
+.task{display:flex;gap:10px;align-items:center;justify-content:space-between;padding:10px 0;border-top:1px solid var(--rule-2)}
+.task:first-child{border-top:0}
+.task label{display:flex;gap:10px;align-items:flex-start;cursor:pointer;flex:1;min-width:0}
+.task input{margin-top:4px;accent-color:var(--accent);width:18px;height:18px;flex:none}
+.task-ic{color:var(--ink-3);font-size:14px;margin-top:2px;flex:none;width:16px;text-align:center}
+.task-l{font-size:16px;line-height:1.35}
+.task.on .task-l{color:var(--ink-3);text-decoration:line-through}
+.task-r{display:flex;gap:8px;align-items:center;flex:none}
+@media (max-width:560px){.task{flex-wrap:wrap}.task-r{margin-left:42px}}
+details.done-today,details.next-up{margin-top:12px;border-top:1px solid var(--rule-2);padding-top:10px}
+details summary{cursor:pointer}
+.pm-list{display:grid;gap:10px}
+a.pm{display:block;text-decoration:none;color:inherit;background:var(--surface);border:1px solid var(--rule);border-radius:10px;padding:12px 16px}
+a.pm:hover{border-color:var(--ink-3)}
+a.pm.now{border-color:var(--warm);box-shadow:var(--shadow)}
+.pm-top{display:flex;gap:10px;align-items:baseline;margin-bottom:8px;flex-wrap:wrap}
+.pm-n{font-family:var(--display);font-weight:800;color:var(--warm);width:20px}
+.pm-t{font-family:var(--display);font-weight:600;flex:1;min-width:180px}
+.pm-b{display:flex;gap:10px;align-items:center;margin-top:8px;flex-wrap:wrap}
+.pm-chips{display:flex;gap:6px;flex-wrap:wrap}
+.hm{display:grid;gap:4px;align-items:center;overflow-x:auto}
+.hm-l{font-family:var(--mono);font-size:11px;color:var(--ink-3)}
+.hm-w{font-family:var(--mono);font-size:10px;color:var(--ink-3);white-space:nowrap}
+.hm-c{aspect-ratio:1;min-height:14px;border-radius:4px;background:var(--surface-2);border:1px solid var(--rule-2)}
+.hm-c.out{background:transparent;border-color:transparent}
+.hm-c.l1{background:color-mix(in srgb,var(--warm) 28%,var(--surface-2))}
+.hm-c.l2{background:color-mix(in srgb,var(--warm) 52%,var(--surface-2))}
+.hm-c.l3{background:color-mix(in srgb,var(--warm) 76%,var(--surface-2))}
+.hm-c.l4{background:var(--warm);border-color:var(--warm)}
+.hm-c.future{opacity:.45}
+.hm-c.today{outline:2px solid var(--ink);outline-offset:1px;opacity:1}
+.hm-legend{display:flex;gap:6px;align-items:center;margin-top:12px;flex-wrap:wrap}
+.hm-legend .hm-c{width:16px;min-height:16px;display:inline-block;aspect-ratio:auto;height:16px}
+.diagram{margin:18px 0;max-width:80ch}
+.diagram .dg-body{background:var(--surface);border:1px solid var(--rule);border-radius:10px;padding:10px;overflow-x:auto}
+.diagram svg{display:block;width:100%;height:auto;max-width:760px;margin:0 auto}
+.diagram figcaption{font-size:14px;color:var(--ink-2);margin-top:6px}
+.diagram .dg-title{font-family:var(--display);font-weight:700;font-size:15px;margin:0 0 6px}
+.dg-box{fill:var(--surface);stroke:var(--ink-3);stroke-width:1.5}
+.dg-k{fill:var(--k-soft);stroke:var(--k);stroke-width:1.5}
+.dg-w{fill:var(--warm-soft);stroke:var(--warm);stroke-width:1.5}
+.dg-r{fill:var(--r-soft);stroke:var(--r);stroke-width:1.5}
+.dg-x{fill:var(--x-soft);stroke:var(--x);stroke-width:1.5}
+.dg-dash{stroke-dasharray:5 4}
+.dg-line{fill:none;stroke:var(--ink-3);stroke-width:2}
+.dg-line-k{stroke:var(--k)}.dg-line-w{stroke:var(--warm)}.dg-line-r{stroke:var(--r)}.dg-line-x{stroke:var(--x)}
+.dg-arrow{fill:var(--ink-3);stroke:var(--ink-3)}.dg-arrow-k{fill:var(--k);stroke:var(--k)}.dg-arrow-w{fill:var(--warm);stroke:var(--warm)}.dg-arrow-r{fill:var(--r);stroke:var(--r)}.dg-arrow-x{fill:var(--x);stroke:var(--x)}
+.dg-t{fill:var(--ink);font-family:var(--display);font-weight:600;font-size:15px}
+.dg-s{fill:var(--ink-2);font-family:var(--body);font-size:13px}
+.dg-n{fill:var(--ink-3);font-family:var(--mono);font-size:11px}
+.dg-c{text-anchor:middle}
+.dg-widget{display:grid;gap:12px}
+input[type=range]{width:100%;accent-color:var(--accent)}
+.diagrams{margin:6px 0 10px}
+</style>
+<header class="mast">
+  <div class="brand">
+    <div class="name">AI Ascent</div>
+    <div class="sub" id="mast-sub">From power user to AI product builder and strategist · 1.5 h on weekdays, 3 h on weekends</div>
+  </div>
+  <div class="meter">
+    <div class="row"><span id="meter-left">Day —</span><span id="meter-right" class="num">0% · 0/0 done</span></div>
+    <div class="bar"><i id="meter-bar"></i></div>
+  </div>
+</header>
+<nav class="tabs" id="tabs">
+  <a href="#today" data-view="today">Today</a>
+  <a href="#progress" data-view="progress">Progress</a>
+  <a href="#curriculum" data-view="curriculum">Curriculum</a>
+  <a href="#digests" data-view="digests">Digests</a>
+  <a href="#notes" data-view="notes">Notes</a>
+  <a href="#forecasts" data-view="forecasts">Forecasts</a>
+  <a href="#puzzles" data-view="puzzles">Puzzles</a>
+  <a href="#guide" data-view="guide">Guide</a>
+  <span class="spacer"></span>
+  <span class="status" id="sync-status">local</span>
+</nav>
+<main id="main"></main>
+<div class="toast" id="toast"></div>
+<script src="curriculum.js"></script>
+<script>
+(function () {
+  'use strict';
+  const $ = (s, r) => (r || document).querySelector(s);
+  const main = $('#main');
+  const LS_KEY = 'ai-ascent-state-v3'; // v3: progress reset on the product-builder re-plan
+
+  // ───────────────────────── utilities
+  const esc = s => String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  const inline = s => esc(s)
+    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+    .replace(/(^|[^*\w])\*([^*\n]+?)\*(?=[^*\w]|$)/g, '$1<em>$2</em>')
+    .replace(/`([^`\n]+)`/g, '<code>$1</code>')
+    .replace(/\[([^\]]+)\]\((https?:[^)\s]+)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>');
+  function md(src) {
+    if (!src) return '';
+    const blocks = String(src).replace(/\r/g, '').trim().split(/\n\s*\n/);
+    return blocks.map(b => {
+      const lines = b.split('\n').filter(l => l.trim() !== '');
+      if (!lines.length) return '';
+      if (lines.every(l => /^\s*[-•*] /.test(l))) return '<ul>' + lines.map(l => '<li>' + inline(l.replace(/^\s*[-•*] /, '')) + '</li>').join('') + '</ul>';
+      if (lines.every(l => /^\s*\d+[.)] /.test(l))) return '<ol>' + lines.map(l => '<li>' + inline(l.replace(/^\s*\d+[.)] /, '')) + '</li>').join('') + '</ol>';
+      const h = lines[0].match(/^(#{1,4})\s+(.*)$/);
+      if (h) {
+        const lvl = Math.min(h[1].length + 2, 5);
+        const rest = lines.slice(1);
+        return `<h${lvl}>${inline(h[2])}</h${lvl}>` + (rest.length ? '<p>' + rest.map(inline).join('<br>') + '</p>' : '');
+      }
+      return '<p>' + lines.map(inline).join('<br>') + '</p>';
+    }).join('');
+  }
+  const pad = n => String(n).padStart(2, '0');
+  const iso = d => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+  const parse = s => { const [y, m, d] = String(s).split('-').map(Number); return new Date(y, m - 1, d); };
+  const addDays = (d, n) => { const x = new Date(d); x.setDate(x.getDate() + n); return x; };
+  const today = () => { const t = new Date(); return new Date(t.getFullYear(), t.getMonth(), t.getDate()); };
+  const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  const DOW = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  const fmt = d => `${MONTHS[d.getMonth()]} ${d.getDate()}`;
+  const fmtLong = d => `${DOW[d.getDay()]}, ${MONTHS[d.getMonth()]} ${d.getDate()}, ${d.getFullYear()}`;
+  const daysBetween = (a, b) => Math.round((b - a) / 86400000);
+  const uid = () => 'c_' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+  let toastT;
+  function toast(msg) { const t = $('#toast'); t.textContent = msg; t.classList.add('show'); clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove('show'), 1800); }
+
+  // ───────────────────────── state
+  const state = {
+    db: null, sample: null, synced: false,
+    progress: { items: {}, days: {}, tasks2: {} },
+    forecasts: {}, digests: {}, notes: {}, highlights: {}, bookmarks: {}, settings: { start: PLAN.start }
+  };
+  function loadLocal() {
+    try { const raw = localStorage.getItem(LS_KEY); if (raw) { const s = JSON.parse(raw); Object.assign(state.progress, s.progress || {}); state.progress.items = state.progress.items || {}; state.progress.days = state.progress.days || {}; state.progress.tasks2 = state.progress.tasks2 || {}; state.forecasts = s.forecasts || {}; state.notes = s.notes || {}; state.settings = Object.assign({ start: PLAN.start }, s.settings || {}); state.digests = s.digests || {}; state.highlights = s.highlights || {}; state.bookmarks = s.bookmarks || {}; } } catch (e) { }
+  }
+  function saveLocal() {
+    try { localStorage.setItem(LS_KEY, JSON.stringify({ progress: state.progress, forecasts: state.forecasts, notes: state.notes, settings: state.settings, digests: state.digests, highlights: state.highlights, bookmarks: state.bookmarks })); } catch (e) { }
+  }
+  function setStatus(t) { $('#sync-status').textContent = t; }
+
+  // ───────────────────────── derived
+  const start = () => parse(state.settings.start || PLAN.start);
+  // Module dates come from hours, not calendar weeks: each module takes its own hours (all ~20 h) out of the
+  // weekday template (Mon-Fri 1.5 h, Sat-Sun 3 h), so the dates stay true if the template or start date changes.
+  const modHours = m => Object.values(m.hours).reduce((a, b) => a + b, 0);
+  let _sched = null, _schedKey = '';
+  function schedule() {
+    const key = (state.settings.start || PLAN.start) + '|' + PLAN.weekTemplate.map(u => u.hours).join(',');
+    if (_sched && _schedKey === key) return _sched;
+    let d = start(), cum = 0, target = 0, prevEnd = null; const out = [];
+    for (const m of PLAN.modules) {
+      target += modHours(m); const first = prevEnd ? addDays(prevEnd, 1) : start(); let last = d;
+      while (cum < target - 1e-9) { cum += PLAN.weekTemplate[(d.getDay() + 6) % 7].hours; last = d; d = addDays(d, 1); }
+      out.push({ n: m.n, start: first, end: last }); prevEnd = last;
+    }
+    _sched = out; _schedKey = key; return out;
+  }
+  const modSpan = n => schedule().find(x => x.n === n);
+  const modRange = n => { const x = modSpan(n); return `${fmt(x.start)} – ${fmt(x.end)}`; };
+  const summitDate = () => schedule()[schedule().length - 1].end;
+  const totalDays = () => daysBetween(start(), summitDate()) + 1;
+  const totalWeeks = () => Math.ceil(totalDays() / 7);
+  function dayNumber() { return daysBetween(start(), today()) + 1; }
+  function currentWeek() { const d = dayNumber(); if (d < 1) return 1; return Math.floor((d - 1) / 7) + 1; }
+  function currentModule() { const t = today(); const hit = schedule().find(x => t <= x.end); return modByN(hit ? hit.n : PLAN.modules.length); }
+  const modByN = n => PLAN.modules.find(m => m.n === n);
+  const modById = id => PLAN.modules.find(m => m.id === id);
+  function itemKey(m, i) { return `${m.id}:${i}`; }
+  function moduleDone(m) { return m.checklist.filter((_, i) => state.progress.items[itemKey(m, i)]).length; }
+  function totals() { let t = 0, d = 0; for (const m of PLAN.modules) { t += m.checklist.length; d += moduleDone(m); } return { t, d, pct: t ? Math.round(100 * d / t) : 0 }; }
+  function streak() {
+    const days = state.progress.days || {}; let d = today(); let n = 0;
+    if (!days[iso(d)]) d = addDays(d, -1);
+    while (days[iso(d)]) { n++; d = addDays(d, -1); }
+    return n;
+  }
+  function forecastList() { return Object.values(state.forecasts).sort((a, b) => (a.by || '').localeCompare(b.by || '') || (a.created || '').localeCompare(b.created || '')); }
+  function brier() {
+    const res = forecastList().filter(f => f.resolved === 'yes' || f.resolved === 'no');
+    if (!res.length) return null;
+    const s = res.reduce((acc, f) => acc + Math.pow((Number(f.p) || 0) / 100 - (f.resolved === 'yes' ? 1 : 0), 2), 0);
+    return { n: res.length, score: s / res.length };
+  }
+  function digestList() { return Object.values(state.digests).sort((a, b) => String(b.date || '').localeCompare(String(a.date || ''))); }
+  function nextMonday() { const t = today(); const dow = t.getDay(); const add = dow === 1 ? 7 : ((8 - dow) % 7 || 7); return addDays(t, add); }
+
+  // ───────────────────────── persistence (db with local fallback)
+  async function ensureProgressDoc() {
+    const ref = state.db.doc('progress/main');
+    const snap = await ref.get();
+    if (!snap.exists) { await ref.set({ items: state.progress.items || {}, days: state.progress.days || {}, updatedAt: new Date().toISOString() }); }
+  }
+  async function writeProgress(patch) {
+    saveLocal();
+    if (!state.db) return;
+    try { setStatus('saving…'); await state.db.doc('progress/main').update(Object.assign({ updatedAt: new Date().toISOString() }, patch)); setStatus('synced'); }
+    catch (e) { if (e && e.code === 'invalid_argument') { try { await ensureProgressDoc(); await state.db.doc('progress/main').update(patch); setStatus('synced'); return; } catch (e2) { } } setStatus('save failed'); console.warn('progress write failed', e); }
+  }
+  async function writeDoc(path, data) {
+    saveLocal();
+    if (!state.db) return;
+    try { setStatus('saving…'); await state.db.doc(path).set(data); setStatus('synced'); } catch (e) { setStatus('save failed'); console.warn('write failed', path, e); toast('Could not save to the hub database'); }
+  }
+  async function deleteDoc(path) {
+    saveLocal();
+    if (!state.db) return;
+    try { await state.db.doc(path).delete(); } catch (e) { console.warn('delete failed', path, e); }
+  }
+  function applyProgressSnap(snap) {
+    if (!snap.exists) return;
+    const d = snap.data() || {};
+    state.progress.items = Object.assign({}, d.items || {});
+    state.progress.days = Object.assign({}, d.days || {});
+    state.progress.tasks2 = Object.assign({}, d.tasks2 || {});
+    saveLocal(); renderMeter(); rerenderIfView(['today', 'curriculum', 'puzzles', 'progress']);
+  }
+  function applyCollectionSnap(target, snap, idField) {
+    const next = {};
+    snap.docs.forEach(doc => { const d = Object.assign({}, doc.data() || {}); d[idField || 'id'] = d[idField || 'id'] || doc.id; next[doc.id] = d; });
+    state[target] = next; saveLocal();
+  }
+  async function initDb() {
+    if (!(window.claude && typeof window.claude.use === 'function')) { setStatus('local only'); return; }
+    let db = null;
+    try { db = await window.claude.use('db'); } catch (e) { db = null; }
+    if (!db) { setStatus('local only'); return; }
+    state.db = db;
+    try {
+      const pref = db.doc('progress/main');
+      const psnap = await pref.get();
+      if (psnap.exists) applyProgressSnap(psnap); else await ensureProgressDoc();
+      pref.onSnapshot(applyProgressSnap, e => console.warn('progress sub', e));
+      const sref = db.doc('settings/main');
+      const ssnap = await sref.get();
+      if (ssnap.exists) { const sd = ssnap.data(); if (sd.start) state.settings.start = sd.start; if (typeof sd.learnerBrief === 'string') state.settings.learnerBrief = sd.learnerBrief; saveLocal(); }
+      sref.onSnapshot(s => { if (!s.exists) return; const sd = s.data(); let changed = false; if (sd.start && sd.start !== state.settings.start) { state.settings.start = sd.start; changed = true; } if (typeof sd.learnerBrief === 'string' && sd.learnerBrief !== state.settings.learnerBrief) { state.settings.learnerBrief = sd.learnerBrief; changed = true; } if (changed) { saveLocal(); renderMeter(); rerenderIfView(['today', 'curriculum', 'guide']); } }, () => { });
+      // forecasts: db is the source of truth; migrate local-only ones once
+      const fsnap = await db.collection('forecasts').limit(500).get();
+      if (fsnap.empty && Object.keys(state.forecasts).length) { for (const f of Object.values(state.forecasts)) { try { await db.doc('forecasts/' + f.id).set(f); } catch (e) { } } }
+      db.collection('forecasts').limit(500).onSnapshot(s => { applyCollectionSnap('forecasts', s, 'id'); rerenderIfView(['forecasts', 'curriculum', 'today']); }, e => console.warn('forecast sub', e));
+      db.collection('digests').orderBy('date', 'desc').limit(80).onSnapshot(s => { applyCollectionSnap('digests', s, 'date'); rerenderIfView(['digests', 'today']); }, e => console.warn('digest sub', e));
+      db.collection('notes').limit(50).onSnapshot(s => { applyCollectionSnap('notes', s, 'id'); }, () => { });
+      const hsnap = await db.collection('highlights').limit(500).get();
+      if (hsnap.empty && Object.keys(state.highlights).length) { for (const h of Object.values(state.highlights)) { try { await db.doc('highlights/' + h.id).set(h); } catch (e) { } } }
+      db.collection('bookmarks').limit(50).onSnapshot(s => { applyCollectionSnap('bookmarks', s, 'module'); const el = document.getElementById('bm-banner'); if (currentView === 'curriculum') markBookmark(); }, e => console.warn('bookmarks sub', e));
+      db.collection('highlights').limit(500).onSnapshot(s => { applyCollectionSnap('highlights', s, 'id'); rerenderIfView(['notes']); }, e => console.warn('highlights sub', e));
+      state.synced = true; setStatus('synced'); renderMeter();
+    } catch (e) { console.warn('db init failed', e); setStatus('local only'); }
+  }
+  async function initSample() {
+    if (!(window.claude && typeof window.claude.use === 'function')) return;
+    try { const s = await window.claude.use('sample'); if (s) { state.sample = s; document.body.classList.add('has-sample'); rerenderIfView(['curriculum', 'puzzles']); } } catch (e) { }
+  }
+
+  // ───────────────────────── rendering helpers
+  function renderMeter() {
+    const dn = dayNumber(); const th = totalHours(), dh = doneHours(); const pct = Math.round(100 * dh / th);
+    let left;
+    if (dn < 1) left = `Starts ${fmtLong(start())} · in ${1 - dn} day${1 - dn === 1 ? '' : 's'}`;
+    else if (dn > totalDays()) left = `Day ${dn} · past the summit`;
+    else left = `Day ${dn} of ${totalDays()} · Module ${activeModule().n}`;
+    $('#meter-left').textContent = left;
+    $('#meter-right').textContent = `${pct}% · ${dh.toFixed(1)} of ${th} h · streak ${streak()}`;
+    $('#meter-bar').style.width = pct + '%';
+  }
+  const chip = (t, cls) => `<span class="chip ${cls || ''}">${esc(t)}</span>`;
+  function dots(m) { const d = moduleDone(m); return `<span class="dots" title="${d}/${m.checklist.length} done">${m.checklist.map((_, i) => `<i class="${i < d ? 'on' : ''}"></i>`).join('')}</span>`; }
+  const altLabel = m => m.altitudeLabel || String(m.altitude);
+  const learnerBrief = () => (state.settings.learnerBrief && state.settings.learnerBrief.trim()) || PLAN.learnerBrief || '';
+  const streamLabel = m => m.synthesis ? 'Summit' : `Module ${m.n}`;
+
+  // ───────────────────────── views
+  // ───────────────────────── tasks, the daily plan and progress tracking
+  const parseMin = t => { const s = String(t || ''); const h = s.match(/(\d+(?:\.\d+)?)\s*h/); const m = s.match(/(\d+)\s*min/); return (h ? Math.round(parseFloat(h[1]) * 60) : 0) + (m ? parseInt(m[1], 10) : 0); };
+  const TASK_CACHE = {};
+  const clip = (s, n) => { s = String(s || ''); return s.length > n ? s.slice(0, n - 1).trimEnd() + '…' : s; };
+  function buildTasks(m) {
+    if (TASK_CACHE[m.id]) return TASK_CACHE[m.id];
+    const T = []; let k = 0; const cap = !!m.synthesis; const MAXC = 40;
+    const add = (group, label, min, link, item) => T.push({ id: `${m.id}:u${k++}`, mod: m.id, group, label, min, link: link || {}, item: (item === undefined || cap) ? null : item });
+    const split = (group, label, total, link, item, partLabels) => { const n = Math.max(1, Math.ceil(total / MAXC)); let left = total; for (let p = 0; p < n; p++) { const mm = p === n - 1 ? left : Math.round(total / n / 5) * 5; left -= mm; add(group, n === 1 ? label : (partLabels && partLabels[p] ? `${label}, ${p + 1} of ${n}: ${partLabels[p]}` : `${label}, part ${p + 1} of ${n}`), mm, link, item); } };
+    if (m.n === 1) { add('setup', 'Setup 1 of 3: create your API key, turn on billing, set a $10 spending cap', 20, { view: 'guide', sec: 'setup' }); add('setup', 'Setup 2 of 3: store the key safely and run the hello-world script with Claude Code', 25, { view: 'guide', sec: 'setup' }); add('setup', 'Setup 3 of 3: pick your dossier idea (Exam Coach, Fix-It Helper, Clinic Front Desk, or your own)', 10, { view: 'guide', sec: 'setup' }); }
+    add('reading', 'Read the reading page: the mental model and the frameworks', 30, { sec: 'framework' }, 0);
+    (m.readings || []).filter(r => !/optional/i.test((r.note || '') + ' ' + (r.time || ''))).forEach(r => split('reading', 'Read: ' + clip(r.title, 70), parseMin(r.time) || 20, { sec: 'readings' }, 0));
+    (m.puzzles || []).forEach((p, i) => add('puzzles', `Puzzle ${i + 1}: ${clip(p.q, 78)}`, 15, { sec: 'puzzles', puzzle: i }, null));
+    add('wrap', 'Write your Map row: the four questions in your own words (in your notes)', 10, { sec: 'framework' }, 4);
+    split('exercise', 'Tutor exercise', 120, { sec: 'exercise' }, 1, ['pick a scenario and lay out the framework (/ai-tutor exercise)', 'defend it against the tutor\'s questions', 'write the deliverable']);
+    const steps = (m.prototype && m.prototype.steps) || [];
+    if (cap) steps.forEach((st, i) => { const mm = String(st).match(/(\d+)\s*min/); split('prototype', `Step ${i + 1}: ${clip(String(st).replace(/^About \d+ min\.\s*/i, ''), 70)}`, mm ? parseInt(mm[1], 10) : 60, { sec: 'prototype' }, null); });
+    else { split('prototype', 'Prototype: design it on paper (steps 1\u20133)', 60, { sec: 'prototype' }, 2, ['the instruction and test cases', 'the cost table and success measure']); split('prototype', 'Prototype: build it with Claude Code and run it (steps 4\u20135)', 90, { sec: 'prototype' }, 2, ['ask Claude Code to build it', 'run it', 'fix what broke and run again'].slice(0, 3)); split('prototype', 'Prototype: read the results and write your dossier chapter (step 6)', 60, { sec: 'prototype' }, 2, ['read the results and decide', 'write the dossier chapter']); }
+    add('wrap', 'Log your two forecasts (5 minutes, gut feel is fine)', 5, { sec: 'forecasts' }, 3);
+    add('wrap', 'Read the weekly digest (20 minutes)', 20, { view: 'digests' }, 4);
+    add('wrap', 'Tutor quiz (/ai-tutor quiz)', 20, { sec: 'checklist' }, 5);
+    return (TASK_CACHE[m.id] = T);
+  }
+  const taskDone = (m, t) => !!state.progress.tasks2[t.id] || (t.item != null && !!state.progress.items[itemKey(m, t.item)]);
+  const taskMin = m => buildTasks(m).reduce((a, t) => a + t.min, 0);
+  const modFraction = m => { const T = buildTasks(m); const tot = taskMin(m); return tot ? T.filter(t => taskDone(m, t)).reduce((a, t) => a + t.min, 0) / tot : 0; };
+  const activeModule = () => PLAN.modules.find(m => buildTasks(m).some(t => !taskDone(m, t))) || PLAN.modules[PLAN.modules.length - 1];
+  const totalHours = () => PLAN.modules.reduce((a, m) => a + modHours(m), 0);
+  const doneHours = () => PLAN.modules.reduce((a, m) => a + modFraction(m) * modHours(m), 0);
+  const slotHours = d => PLAN.weekTemplate[(d.getDay() + 6) % 7].hours;
+  function plannedHoursThrough(d) { let h = 0, x = start(); while (x <= d) { h += slotHours(x); x = addDays(x, 1); } return Math.min(h, totalHours()); }
+  function projectedFinish() {
+    const remaining = totalHours() - doneHours(); if (remaining <= 0.05) return today(); let x = today(), h = 0;
+    for (let i = 0; i < 400; i++) { h += slotHours(x); if (h >= remaining) return x; x = addDays(x, 1); } return x;
+  }
+  function minutesByDate() { const out = {}; PLAN.modules.forEach(m => buildTasks(m).forEach(t => { const v = state.progress.tasks2[t.id]; if (typeof v === 'string' && v) out[v] = (out[v] || 0) + t.min; })); return out; }
+  function longestStreak() { const days = Object.keys(state.progress.days || {}).filter(k => state.progress.days[k]).sort(); let best = 0, run = 0, prev = null; days.forEach(k => { const d = parse(k); run = (prev && daysBetween(prev, d) === 1) ? run + 1 : 1; best = Math.max(best, run); prev = d; }); return best; }
+  function allDoneTasksList() {
+    const out = [];
+    PLAN.modules.forEach(m => buildTasks(m).forEach(t => { const ds = state.progress.tasks2[t.id]; if (typeof ds === 'string' && ds) out.push({ m, t, ds }); }));
+    out.sort((a, b) => b.ds.localeCompare(a.ds) || a.m.n - b.m.n);
+    return out;
+  }
+  function statusInfo() {
+    const dn = dayNumber(); if (dn < 1) return { label: 'Not started', cls: '', diff: 0 };
+    const planned = plannedHoursThrough(addDays(today(), -1)); const diff = doneHours() - planned;
+    if (Math.abs(diff) < 1.5) return { label: 'On track', cls: 'r', diff };
+    return diff > 0 ? { label: `Ahead by ${diff.toFixed(1)} h`, cls: 'r', diff } : { label: `Behind by ${(-diff).toFixed(1)} h`, cls: 'warm', diff };
+  }
+  function todaysPlan() {
+    const t = today(); const ds = iso(t); const budget = Math.round(slotHours(t) * 60); const m = activeModule(); const T = buildTasks(m);
+    const doneToday = []; PLAN.modules.forEach(mm => buildTasks(mm).forEach(tk => { if (state.progress.tasks2[tk.id] === ds) doneToday.push(tk); }));
+    const doneMin = doneToday.reduce((a, x) => a + x.min, 0); const remaining = Math.max(0, budget - doneMin);
+    const undone = T.filter(tk => !taskDone(m, tk)); const plan = []; let used = 0;
+    for (const tk of undone) { if (used >= remaining) break; if (plan.length && used + tk.min > remaining + 10) break; plan.push(tk); used += tk.min; }
+    const rest = undone.filter(tk => !plan.includes(tk));
+    const idx = PLAN.modules.findIndex(x => x.id === m.id);
+    const upcoming = PLAN.modules.slice(idx + 1).map(mm => ({ m: mm, tasks: buildTasks(mm).filter(tk => !taskDone(mm, tk)) })).filter(g => g.tasks.length);
+    return { m, budget, doneToday, doneMin, remaining, plan, planMin: used, rest, upcoming };
+  }
+  function syncItems(m) {
+    if (m.synthesis) return false; const T = buildTasks(m); let changed = false;
+    [0, 1, 2, 3, 4, 5].forEach(idx => {
+      const grp = T.filter(t => t.item === idx); if (!grp.length) return;
+      const key = itemKey(m, idx); const allDone = grp.every(t => state.progress.tasks2[t.id]);
+      if (allDone && !state.progress.items[key]) { state.progress.items[key] = true; changed = true; }
+      if (!allDone && state.progress.items[key]) { delete state.progress.items[key]; changed = true; }
+    });
+    return changed;
+  }
+  async function setTask(id, on) {
+    const t0 = PLAN.modules.map(m => buildTasks(m).find(t => t.id === id)).find(Boolean); if (!t0) return; const m = modById(t0.mod); const ds = iso(today());
+    if (on) { state.progress.tasks2[id] = ds; state.progress.days[ds] = true; } else { delete state.progress.tasks2[id]; }
+    const wasComplete = moduleDone(m) === m.checklist.length;
+    syncItems(m);
+    await writeProgress({ tasks2: state.progress.tasks2, days: state.progress.days, items: state.progress.items });
+    renderMeter(); rerenderIfView(['today', 'progress', 'curriculum']);
+    if (on && !wasComplete && moduleDone(m) === m.checklist.length) toast(`${streamLabel(m)} complete`);
+    else if (on) toast('Done. Nice.');
+    else toast('Marked not done');
+  }
+  const taskIcon = g => ({ setup: '⚙', reading: '▤', puzzles: '◇', wrap: '✓', exercise: '◎', prototype: '▣' }[g] || '•');
+  function taskRowHtml(m, t, opts) {
+    const done = taskDone(m, t); const tutor = /ai-tutor/.test(t.label) ? '<span class="chip x">tutor</span>' : '';
+    const meta = opts && opts.meta ? `<span class="mono muted">${esc(opts.meta)}</span>` : '';
+    return `<li class="task ${done ? 'on' : ''}"><label><input type="checkbox" data-action="task-toggle" data-id="${esc(t.id)}" ${done ? 'checked' : ''}><span class="task-ic" aria-hidden="true">${taskIcon(t.group)}</span><span class="task-l">${esc(t.label)}</span></label><span class="task-r">${tutor}${meta}<span class="mono muted">${t.min} min</span><button class="btn small" data-action="task-open" data-mod="${esc(t.mod)}" data-sec="${esc(t.link.sec || '')}" data-view="${esc(t.link.view || '')}" data-puzzle="${t.link.puzzle === undefined ? '' : t.link.puzzle}">Open</button></span></li>`;
+  }
+  const fmtHM = min => min >= 60 ? `${Math.floor(min / 60)} h${min % 60 ? ' ' + (min % 60) + ' min' : ''}` : `${min} min`;
+
+  function viewToday() {
+    const dn = dayNumber(); const t = today(); const before = dn < 1; const plan = todaysPlan(); const m = plan.m; const si = statusInfo(); const st = streak();
+    const open = forecastList().filter(f => !f.resolved); const due = open.filter(f => f.by && parse(f.by) <= addDays(t, 30)); const latest = digestList()[0];
+    const pct = Math.min(100, Math.round(100 * (plan.doneMin + 0) / Math.max(1, plan.budget)));
+    const modPct = Math.round(100 * modFraction(m)); const sp = modSpan(m.n);
+    const T = buildTasks(m); const groups = [['reading', 'Read'], ['puzzles', 'Puzzles'], ['exercise', 'Exercise'], ['prototype', 'Prototype'], ['wrap', 'Wrap-up']];
+    const chips = groups.map(([g, lbl]) => { const gt = T.filter(x => x.group === g); if (!gt.length) return ''; const dn2 = gt.filter(x => taskDone(m, x)).length; return `<span class="chip ${dn2 === gt.length ? 'r' : dn2 ? 'warm' : ''}">${lbl} ${dn2}/${gt.length}</span>`; }).join('');
+    const behindNote = (calendarModuleN => calendarModuleN > m.n ? `The schedule has you in Module ${calendarModuleN}; you are still finishing Module ${m.n}. That's fine: finish this one first.` : '')(currentModule().n);
+    return `
+    <div class="today-head">
+      <div>
+        <div class="eyebrow">${esc(fmtLong(t))}</div>
+        <div class="daycount">${before ? `T−${1 - dn}` : `Day ${dn}`}<small> ${before ? 'until the ascent starts' : `of ${totalDays()} · Module ${m.n}`}</small></div>
+      </div>
+      <div class="grid three" style="gap:22px">
+        <div class="stat"><span class="v num">${Math.round(100 * doneHours() / totalHours())}%</span><span class="l">of the track</span></div>
+        <div class="stat"><span class="v num">${st}</span><span class="l">day streak</span></div>
+        <div class="stat"><a href="#progress" style="text-decoration:none">${chip(si.label, si.cls)}</a><span class="l" style="margin-top:6px">vs schedule</span></div>
+      </div>
+    </div>
+    <div class="today-grid">
+      <section class="card raised plan">
+        <div class="plan-head"><div><div class="eyebrow">Today's plan · ${esc(PLAN.weekTemplate[(t.getDay() + 6) % 7].day)} · ${esc(fmtHM(plan.budget))} slot (weekdays 1.5 h, weekends 3 h)</div><h2 style="margin:6px 0 2px">${plan.plan.length ? 'Do these, in this order' : (plan.remaining === 0 ? 'Today\'s slot is done' : 'Everything in this module is done')}</h2></div><div class="plan-meter" title="${plan.doneMin} of ${plan.budget} minutes done today"><div class="bar"><i style="width:${pct}%"></i></div><span class="mono muted">${plan.doneMin} / ${plan.budget} min today</span></div></div>
+        ${plan.plan.length ? `<ul class="tasks">${plan.plan.map(x => taskRowHtml(m, x)).join('')}</ul><div class="mono muted" style="margin-top:8px">This plan: ${fmtHM(plan.planMin)}${plan.doneMin ? ' · already done today: ' + fmtHM(plan.doneMin) : ''}</div>` : ''}
+        ${!plan.plan.length && plan.remaining === 0 ? `<p class="muted" style="margin:8px 0 12px">You have put in today's time. Rest is part of the plan. If you have energy, the next tasks are below.</p>` : ''}
+        ${plan.doneToday.length ? `<details class="done-today"><summary class="mono muted">Done today (${plan.doneToday.length})</summary><ul class="tasks">${plan.doneToday.map(x => taskRowHtml(modById(x.mod), x)).join('')}</ul></details>` : ''}
+        ${plan.rest.length ? `<details class="next-up" ${plan.plan.length ? '' : 'open'}><summary class="mono muted">Next up after this (${plan.rest.length} tasks, ${fmtHM(plan.rest.reduce((a, x) => a + x.min, 0))})</summary><ul class="tasks">${plan.rest.map(x => taskRowHtml(m, x)).join('')}</ul></details>` : ''}
+        ${plan.upcoming.length ? `<details class="next-up"><summary class="mono muted">Later modules, so you can get ahead (${plan.upcoming.length} week${plan.upcoming.length === 1 ? '' : 's'} queued)</summary>${plan.upcoming.map(g => `<div style="margin-top:10px"><div class="eyebrow" style="margin-bottom:4px"><a href="#curriculum/${g.m.id}" style="color:inherit">${esc(streamLabel(g.m))} · ${esc(g.m.title)}</a> <span class="muted">· ${esc(modRange(g.m.n))}</span></div><ul class="tasks">${g.tasks.slice(0, 8).map(x => taskRowHtml(g.m, x)).join('')}</ul>${g.tasks.length > 8 ? `<div class="mono muted" style="margin:6px 0 2px"><a href="#curriculum/${g.m.id}">+${g.tasks.length - 8} more in this module →</a></div>` : ''}</div>`).join('')}</details>` : ''}
+        <div class="muted small" style="margin-top:12px">Ticking a task counts today toward your streak. Finishing all the tasks of a stage ticks it on the module checklist for you. You can tick any task above, including ones in later modules — get ahead whenever you like.</div>
+      </section>
+      <div class="col">
+        <div id="today-bm"></div>
+        <section class="card">
+          <div class="eyebrow">${esc(streamLabel(m))} · ${esc(modRange(m.n))}</div>
+          <h3 style="margin:6px 0 4px"><a href="#curriculum/${m.id}" style="color:inherit;text-decoration:none">${esc(m.title)}</a></h3>
+          <div class="bar" style="margin:8px 0"><i style="width:${modPct}%"></i></div>
+          <div class="mono muted" style="margin-bottom:8px">${modPct}% of this module · due ${esc(fmt(sp.end))}</div>
+          <div style="display:flex;flex-wrap:wrap;gap:6px">${chips}</div>
+          ${behindNote ? `<p class="muted small" style="margin:10px 0 0">${esc(behindNote)}</p>` : ''}
+          <div style="margin-top:12px"><a class="btn small" href="#curriculum/${m.id}">Open the module</a> <a class="btn small" href="#progress">See all progress</a></div>
+        </section>
+        <section class="card">
+          <div class="eyebrow">Latest digest</div>
+          ${latest ? `<h3 style="margin:6px 0 4px"><a href="#digests" style="color:inherit;text-decoration:none">${esc(latest.title || 'Digest')}</a></h3><div class="mono muted">${esc(latest.date || '')}</div><p class="small" style="margin:8px 0 0">${esc(clip(latest.summary || '', 220))}</p>` : `<p class="muted" style="margin-top:8px">No digest yet. The first one lands Monday ${esc(fmt(nextMonday()))}.</p>`}
+          ${due.length ? `<div class="eyebrow" style="margin-top:12px">Forecasts due within 30 days</div><ul class="applied" style="margin-top:6px">${due.slice(0, 3).map(f => `<li class="small">${esc(clip(f.q, 90))} <span class="mono muted">· ${esc(f.by)}</span></li>`).join('')}</ul>` : ''}
+        </section>
+      </div>
+    </div>`;
+  }
+
+  function viewProgress() {
+    const dn = dayNumber(); const si = statusInfo(); const dh = doneHours(); const th = totalHours(); const planned = plannedHoursThrough(addDays(today(), -1)); const pf = projectedFinish();
+    const mins = minutesByDate(); const days = state.progress.days || {};
+    const allDone = allDoneTasksList();
+    const studied = Object.keys(days).filter(k => days[k]).length; const dayCount = Math.max(1, Math.min(dn, totalDays())); const sumMin = Object.values(mins).reduce((a, b) => a + b, 0);
+    const planFinish = summitDate(); const lateDays = daysBetween(planFinish, pf);
+    const modRows = PLAN.modules.map(m => {
+      const T = buildTasks(m); const frac = modFraction(m); const sp = modSpan(m.n); const pctM = Math.round(frac * 100); const isNow = m.n === activeModule().n; const late = !pctM && addDays(today(), 0) > sp.end ? 'overdue' : '';
+      const groups = [['reading', 'Read'], ['puzzles', 'Puzzles'], ['exercise', 'Exercise'], ['prototype', 'Prototype'], ['wrap', 'Wrap-up']].map(([g, lbl]) => { const gt = T.filter(x => x.group === g); if (!gt.length) return ''; const d2 = gt.filter(x => taskDone(m, x)).length; return `<span class="chip ${d2 === gt.length ? 'r' : d2 ? 'warm' : ''}">${lbl} ${d2}/${gt.length}</span>`; }).join('');
+      return `<a class="pm ${isNow ? 'now' : ''}" href="#curriculum/${m.id}"><div class="pm-top"><span class="pm-n">${m.n}</span><span class="pm-t">${esc(m.title)}</span><span class="mono muted">${esc(modRange(m.n))}</span></div><div class="bar"><i style="width:${pctM}%"></i></div><div class="pm-b"><span class="mono muted">${pctM}% · ${modHours(m)} h</span>${isNow ? chip('now', 'k') : ''}${late ? chip('past its dates', 'warm') : ''}<span class="pm-chips">${groups}</span></div></a>`;
+    }).join('');
+    // heatmap: columns are weeks (Mon first), rows Mon..Sun
+    const s0 = start(); const wk0 = addDays(s0, -((s0.getDay() + 6) % 7)); const end = summitDate(); const wkN = Math.ceil((daysBetween(wk0, end) + 1) / 7);
+    const lvl = v => v <= 0 ? 0 : v < 45 ? 1 : v < 90 ? 2 : v < 150 ? 3 : 4; const tstr = iso(today()); const dnames = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+    let cells = ''; for (let r = 0; r < 7; r++) { cells += `<div class="hm-l">${dnames[r]}</div>`; for (let c = 0; c < wkN; c++) { const d = addDays(wk0, c * 7 + r); const k = iso(d); const inRange = d >= s0 && d <= end; const mn = mins[k] || 0; const marked = days[k] && !mn; cells += inRange ? `<div class="hm-c l${marked ? 1 : lvl(mn)} ${k === tstr ? 'today' : ''} ${d > today() ? 'future' : ''}" title="${esc(fmtLong(d))}: ${mn ? mn + ' min of tasks' : (marked ? 'studied' : 'nothing logged')} (plan: ${slotHours(d)} h)"></div>` : `<div class="hm-c out"></div>`; } }
+    const wkLabels = Array.from({ length: wkN }, (_, c) => `<div class="hm-w">${c % 2 === 0 ? esc(fmt(addDays(wk0, c * 7))) : ''}</div>`).join('');
+    return `
+    <div class="today-head"><div><div class="eyebrow">Plan versus actual</div><h1>Progress</h1></div><div class="muted small">Start ${esc(fmtLong(s0))} · summit ${esc(fmtLong(planFinish))}</div></div>
+    <div class="grid three" style="margin-bottom:18px">
+      <div class="card"><div class="stat"><span class="v num">${Math.round(100 * dh / th)}%</span><span class="l">of the track · ${dh.toFixed(1)} of ${th} h</span></div><div class="bar" style="margin-top:10px"><i style="width:${Math.round(100 * dh / th)}%"></i></div></div>
+      <div class="card"><div class="stat"><span class="v">${chip(si.label, si.cls)}</span><span class="l" style="margin-top:8px">${planned.toFixed(1)} h planned by yesterday · ${dh.toFixed(1)} h done</span></div></div>
+      <div class="card"><div class="stat"><span class="v num" style="font-size:24px">${esc(fmt(pf))}</span><span class="l">projected finish at today's pace${lateDays > 0 ? ` (${lateDays} day${lateDays === 1 ? '' : 's'} after plan)` : lateDays < 0 ? ` (${-lateDays} days early)` : ' (on plan)'}</span></div></div>
+    </div>
+    <div class="grid three" style="margin-bottom:22px">
+      <div class="card"><div class="stat"><span class="v num">${streak()}</span><span class="l">current streak (days)</span></div></div>
+      <div class="card"><div class="stat"><span class="v num">${longestStreak()}</span><span class="l">longest streak</span></div></div>
+      <div class="card"><div class="stat"><span class="v num">${studied}<small style="font-size:16px;color:var(--ink-2)"> / ${dayCount}</small></span><span class="l">days studied · ${(sumMin / 60).toFixed(1)} h of tasks logged</span></div></div>
+    </div>
+    <h2 style="margin:0 0 10px">Modules</h2>
+    <div class="pm-list" style="margin-bottom:26px">${modRows}</div>
+    <h2 style="margin:0 0 10px">Every day of the plan</h2>
+    <div class="card"><div class="hm" style="grid-template-columns:34px repeat(${wkN}, minmax(14px, 1fr))"><div></div>${wkLabels}${cells}</div>
+      <div class="hm-legend"><span class="mono muted">less</span><i class="hm-c l0"></i><i class="hm-c l1"></i><i class="hm-c l2"></i><i class="hm-c l3"></i><i class="hm-c l4"></i><span class="mono muted">more · darker = more task time that day · outline = today · faded = still to come</span></div></div>
+    <h2 style="margin:26px 0 10px">All completed tasks</h2>
+    <details class="digest">
+      <summary><span class="t">${allDone.length} task${allDone.length === 1 ? '' : 's'} ticked</span><span class="sum">Untick anything marked by mistake, on any day — it undoes that one task and updates its module's checklist.</span></summary>
+      <div class="body">${allDone.length ? `<ul class="tasks">${allDone.map(x => taskRowHtml(x.m, x.t, { meta: `${esc(fmt(parse(x.ds)))} · Module ${x.m.n}` })).join('')}</ul>` : `<div class="empty">Nothing ticked yet.</div>`}</div>
+    </details>`;
+  }
+
+  main.addEventListener('change', async e => { const t = e.target; if (t.matches && t.matches('input[data-action="task-toggle"]')) { await setTask(t.dataset.id, t.checked); } });
+  main.addEventListener('click', e => {
+    const el = e.target.closest('[data-action="task-open"]'); if (!el) return; const mod = el.dataset.mod, sec = el.dataset.sec, view = el.dataset.view, pz = el.dataset.puzzle;
+    if (view === 'digests') { location.hash = '#digests'; return; }
+    if (view === 'guide') { pendingScroll = sec || null; if (location.hash === '#guide') route(); else location.hash = '#guide'; return; }
+    pendingScroll = sec || null; pendingPuzzle = pz === '' ? null : { mod, i: pz };
+    if (location.hash === '#curriculum/' + mod) route(); else location.hash = '#curriculum/' + mod;
+  });
+  let pendingPuzzle = null;
+
+  function checklistHtml(m) {
+    return `<div class="checklist" data-mod="${m.id}">${m.checklist.map((c, i) => { const on = !!state.progress.items[itemKey(m, i)]; return `<label class="check ${on ? 'on' : ''}"><input type="checkbox" data-action="toggle-item" data-mod="${m.id}" data-i="${i}" ${on ? 'checked' : ''}><span>${esc(c)}</span></label>`; }).join('')}</div>`;
+  }
+
+  // ───────────────────────── track builder: new modules on top of the original deep material
+  function buildModules(OLD) {
+    const byId = id => OLD.find(o => o.id === id);
+    const CHECK = PLAN.checklist || ["Reading page read", "Tutor exercise done", "Prototype shipped (dossier chapter written)", "Two forecasts logged (5 min, gut feel is fine)", "Digest read; Map row written (10 min)", "Tutor quiz passed"];
+    const CAP = PLAN.capstoneChecklist || ["Brief chosen and written", "Prototype or thesis shipped", "Demo recorded", "Forecasts scored (Brier)", "Retrospective + next-90-days plan written"];
+    const stubField = { teardown: { name: 'Coming in the next step', body: '', url: '' }, applied: [], people: [], impact: '' };
+    const stubHorizon = { frontier: '', who: [], world: '', ideate: '' };
+    return TRACK.map(v => {
+      const olds = (v.deepFrom || []).map(byId).filter(Boolean);
+      const cat = k => olds.reduce((a, o) => a.concat(o[k] || []), []);
+      const field = olds.length === 0 ? stubField : { teardown: olds[0].field.teardown, applied: cat('field').length ? olds.reduce((a, o) => a.concat(o.field.applied), []) : [], people: olds.reduce((a, o) => a.concat(o.field.people), []).slice(0, 8), impact: olds[0].field.impact };
+      const horizon = olds.length === 0 ? stubHorizon : { frontier: olds[0].horizon.frontier, who: olds.reduce((a, o) => a.concat(o.horizon.who), []), world: olds[0].horizon.world, ideate: olds[0].horizon.ideate };
+      return Object.assign({
+        altitudeLabel: v.alt, altitude: v.alt, synthesis: !!v.capstone, ready: !!v.frame, deep: olds,
+        checklist: v.capstone ? CAP : CHECK,
+        concepts: olds.reduce((a, o) => a.concat(o.concepts || []), []).slice(0, 10),
+        puzzles: cat('puzzles'), predictions: cat('predictions'), readings: [], field, horizon
+      }, v);
+    });
+  }
+  function readingsHtml(list) {
+    const readings = (list || []).filter(r => r.url || r.title);
+    return `<ol class="readings">${readings.map(r => `<li><span class="kind">${esc(r.kind)}</span><span><span class="t">${r.url ? `<a href="${esc(r.url)}" target="_blank" rel="noopener">${esc(r.title)}</a>` : esc(r.title)}</span> <span class="time">· ${esc(r.time)}</span><div class="by">${esc(r.by)}</div>${r.note ? `<div class="note">${esc(r.note)}</div>` : ''}</span></li>`).join('')}</ol>`;
+  }
+  function buildStepsHtml(b) {
+    return `<ol class="steps">${b.steps.map(s => `<li><span>${inline(s)}</span></li>`).join('')}</ol>`;
+  }
+  function deepHtml(m) {
+    if (!m.deep || !m.deep.length) return '';
+    const body = m.deep.map(o => `
+      <h3 style="margin:22px 0 8px">${esc(o.title)} <span class="mono muted">(original module ${o.n})</span></h3>
+      ${o.plain ? `<div class="callout plain"><div class="eyebrow">In plain words</div><div>${esc(o.plain)}</div></div>` : ''}
+      <h4 style="margin:14px 0 6px">How does it work?</h4><div class="prose">${md(o.how)}</div>
+      ${(o.examples && o.examples.length) ? `<h4 style="margin:14px 0 6px">Worked examples</h4>${o.examples.map((ex, i) => exampleHtml(ex, i)).join('')}` : ''}
+      <h4 style="margin:14px 0 6px">What can it do, and not do?</h4><div class="prose">${md(o.what)}</div>
+      <h4 style="margin:14px 0 6px">When did it come about?</h4><ol class="timeline">${(o.when || []).map(w => `<li><span class="y">${esc(w.y)}</span><span>${inline(w.t)}</span></li>`).join('')}</ol>
+      <h4 style="margin:14px 0 6px">Why this, and not something else?</h4><div class="prose">${md(o.why)}</div>
+      <h4 style="margin:14px 0 6px">Original readings</h4>${readingsHtml(o.readings)}
+      <h4 style="margin:14px 0 6px">Original from-scratch build: ${esc(o.build.title)}</h4><p class="prose"><em>${esc(o.build.goal)}</em></p>${buildStepsHtml(o.build)}`).join('<hr style="border:0;border-top:1px solid var(--rule);margin:26px 0">');
+    return `<section class="sect" id="s-deep"><details class="digest" ${m.ready ? '' : 'open'}><summary><span class="t">Under the hood (optional)</span><span class="sum">The original deep material, including the maths and the from-scratch builds. Nothing here is required.</span></summary><div class="body">${body}</div></details></section>`;
+  }
+
+  function viewCurriculum(mid) {
+    const cur = currentModule();
+    const m = modById(mid) || cur;
+    const rail = `<aside class="rail" aria-label="modules">${PLAN.modules.map(x => `<a href="#curriculum/${x.id}" class="${x.id === m.id ? 'on' : ''}"><span class="alt">${esc(altLabel(x))}</span><span><span class="t">${esc(x.title)}</span><span class="w">${esc(modRange(x.n))} ${dots(x)}${x.n === cur.n ? ' · now' : ''}</span></span></a>`).join('')}</aside>`;
+    const nav = [['overview', 'overview'], ['framework', 'reading'], ['exercise', 'exercise'], ['prototype', 'prototype'], ['puzzles', 'puzzles'], ['forecasts', 'forecasts'], ['field', 'field notes'], ['horizon', 'horizon'], ['checklist', 'checklist'], ['deep', 'under the hood']];
+    const framework = !m.ready ? `<section class="sect" id="s-framework"><div class="callout"><div class="eyebrow">Coming next</div><div>${m.deep.length ? "This module's framework page, tutor exercise and prototype are written in the next step. For now the original deep material is open at the bottom of the page. You can skip it: nothing here is required until the framework page lands." : "This is a new module that wasn't in the original plan. Its framework page, tutor exercise and prototype are written in the next step."}</div></div></section>` : `
+      <section class="sect" id="s-framework"><div class="eyebrow">Reading · ${m.hours.reading} h</div><h2>The mental model</h2>
+        ${(m.words && m.words.length) ? `<div class="card" style="max-width:80ch;margin-bottom:14px"><div class="eyebrow">Words you will meet</div><dl class="kv" style="margin-top:8px">${m.words.map(w => `<dt>${esc(w.term)}</dt><dd>${esc(w.def)}</dd>`).join('')}</dl></div>` : ''}
+        ${m.plain ? `<div class="callout plain"><div class="eyebrow">In plain words, before the detail</div><div>${esc(m.plain)}</div></div>` : ''}
+        ${diagramsHtml(m)}
+        <div class="prose">${md(m.frame)}</div>
+        ${state.sample ? `<div><button class="btn small" data-action="deeper" data-mod="${m.id}">Go deeper on the hardest idea here</button><div class="sample-out" id="deeper-out" hidden></div></div>` : ''}
+        ${m.fourq ? `<h3 style="margin:24px 0 8px">The four questions, in brief</h3><dl class="kv"><dt>How does it work?</dt><dd>${inline(m.fourq.how)}</dd><dt>What can it do?</dt><dd>${inline(m.fourq.what)}</dd><dt>When did it arrive?</dt><dd>${inline(m.fourq.when)}</dd><dt>Why this and not something else?</dt><dd>${inline(m.fourq.why)}</dd></dl><p class="muted small" style="margin-top:8px">Write these four answers in your own words in your notes at the bottom of this page. That is this module's row of your Map.</p>` : ''}
+        <h3 style="margin:24px 0 10px">Frameworks to keep</h3>
+        ${(() => { const fw = m.frameworks || []; const anyCore = fw.some(f => f.core); const core = anyCore ? fw.filter(f => f.core) : fw; const more = anyCore ? fw.filter(f => !f.core) : []; const card = f => `<div class="card" style="max-width:80ch;margin-bottom:12px"><div class="eyebrow" style="color:var(--k)">${f.core ? 'Core framework' : 'Framework'}</div><h3 style="margin:4px 0 4px">${esc(f.name)}</h3><div class="small muted" style="margin-bottom:8px">${esc(f.use)}</div><div class="prose small">${md(f.body)}</div></div>`; return core.map(card).join('') + (more.length ? `<details class="digest"><summary><span class="t">More tools (optional)</span><span class="sum">Useful, but you can skip these and still keep up.</span></summary><div class="body">${more.map(card).join('')}</div></details>` : ''); })()}
+      </section>
+      <section class="sect" id="s-exercise"><div class="eyebrow">Tutor exercise · ${m.hours.exercise} h</div><h2>${esc(m.exercise.title)}</h2><div class="muted small" style="margin-bottom:8px">${esc(m.exercise.time || '')}</div>
+        <div class="prose">${md(m.exercise.intro)}</div>
+        <ul class="applied" style="margin-top:12px">${m.exercise.scenarios.map(sc => `<li>${chip(sc.domain, 'x')} ${esc(sc.prompt)}</li>`).join('')}</ul>
+        <div class="callout"><div class="eyebrow">Deliverable</div><div>${esc(m.exercise.deliverable)}</div></div>
+      </section>
+      <section class="sect" id="s-prototype"><div class="eyebrow">Prototype · ${m.hours.prototype} h</div><h2>${esc(m.prototype.title)}</h2><div class="muted small" style="margin-bottom:8px">${esc(m.prototype.time || '')}</div>
+        <p class="prose"><em>${esc(m.prototype.goal)}</em></p>${m.prototype.cost ? `<div class="mono muted" style="margin-bottom:8px">${esc(m.prototype.cost)}</div>` : ''}${buildStepsHtml(m.prototype)}
+        <div class="callout"><div class="eyebrow">Deliverable</div><div>${esc(m.prototype.deliverable)}</div></div>
+        <div class="callout" style="border-left-color:var(--k)"><div class="eyebrow">Who does what</div><div>${esc(m.prototype.rule)}</div></div>
+        <div class="callout" style="border-left-color:var(--x)"><div class="eyebrow">Stretch</div><div>${esc(m.prototype.stretch)}</div></div>
+      </section>
+      ${(m.readings && m.readings.length) ? `<section class="sect" id="s-readings"><div class="eyebrow">Readings · required ones first, the rest optional</div><h2>Short readings</h2>${readingsHtml(m.readings)}</section>` : ''}`;
+    const doc = `
+    <article>
+      <header class="mod-head">
+        <div class="kicker">${chip(streamLabel(m), 'warm')}${chip(modRange(m.n))}${chip('altitude ' + altLabel(m))}${m.n === cur.n ? chip('this module', 'k') : ''}</div>
+        <h1>${esc(m.title)}</h1>
+        <div class="tag">${esc(m.tagline)}</div>
+        <div class="hours">${Object.entries(m.hours).filter(([k, v]) => v).map(([k, v]) => `<span><b>${v} h</b> ${k}</span>`).join('')}<span><b>${modHours(m)} h</b> total</span></div>
+        <div class="subnav">${nav.map(([s, label]) => `<a href="#curriculum/${m.id}" data-scroll="${s}">${label}</a>`).join('')}</div>
+      </header>
+      ${m.purpose ? `<div class="callout purpose"><div class="eyebrow">Why this module, and what you'll be able to do</div><div>${esc(m.purpose)}</div></div>` : ''}
+      <section class="sect" id="s-overview">
+        <div class="eyebrow">Concepts in this module</div>
+        <div style="display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 4px">${(m.concepts || []).map(c => chip(c, 'k')).join('')}</div>
+      </section>
+      ${framework}
+      <section class="sect" id="s-puzzles"><div class="eyebrow">Puzzles &amp; Fermi estimates · ${m.hours.puzzles || 1} h</div><h2>Check the understanding</h2>${m.puzzles.length ? m.puzzles.map((p, i) => puzzleHtml(m, p, i)).join('') : '<div class="empty">Puzzles for this module arrive with its framework page.</div>'}</section>
+      <section class="sect" id="s-forecasts"><div class="eyebrow">Forecast journal</div><h2>Log this module's forecasts</h2><p class="prose muted">Keep it light: give each a quick gut-feel probability, about 5 minutes in total, and move on. Resolve them when the dates come; the score matters most at the capstone.</p>${m.predictions.length ? m.predictions.map((p, i) => forecastSuggestHtml(m, p, i)).join('') : '<div class="empty">Forecasts for this module arrive with its framework page.</div>'}</section>
+      <section class="sect r" id="s-field"><div class="eyebrow">In the wild · relevance</div><h2>Field notes</h2>
+        <div class="card" style="max-width:80ch;margin-bottom:14px"><div class="eyebrow" style="color:var(--r)">Product teardown</div><h3 style="margin:4px 0 6px">${m.field.teardown.url ? `<a href="${esc(m.field.teardown.url)}" target="_blank" rel="noopener" style="color:inherit">${esc(m.field.teardown.name)}</a>` : esc(m.field.teardown.name)}</h3><p style="margin:0">${esc(m.field.teardown.body)}</p></div>
+        ${m.field.applied.length ? `<h4 style="margin:12px 0 6px">Where it's applied</h4><ul class="applied">${m.field.applied.map(a => `<li>${esc(a.t)}${a.url ? ` <a class="small" href="${esc(a.url)}" target="_blank" rel="noopener">source</a>` : ''}</li>`).join('')}</ul>` : ''}
+        ${m.field.people.length ? `<h4 style="margin:16px 0 6px">Who</h4><ul class="people">${m.field.people.map(p => `<li><b>${esc(p.n)}</b><span>${esc(p.r)}</span></li>`).join('')}</ul>` : ''}
+        ${m.field.impact ? `<h4 style="margin:16px 0 6px">Impact</h4><p class="prose">${esc(m.field.impact)}</p>` : ''}
+      </section>
+      <section class="sect x" id="s-horizon"><div class="eyebrow">The horizon · excitement</div><h2>Where this is going</h2>
+        ${m.horizon.frontier ? `<h4 style="margin:6px 0 6px">Frontier (as of Oct 2026)</h4><p class="prose">${esc(m.horizon.frontier)}</p>` : ''}
+        ${m.horizon.who.length ? `<h4 style="margin:12px 0 6px">Who's building it</h4><ul class="people">${m.horizon.who.map(p => `<li><b>${esc(p.n)}</b><span>${esc(p.r)}</span></li>`).join('')}</ul>` : ''}
+        ${m.horizon.world ? `<h4 style="margin:16px 0 6px">How it's changing the world</h4><p class="prose">${esc(m.horizon.world)}</p>` : ''}
+        ${m.horizon.ideate ? `<div class="callout" style="border-left-color:var(--x)"><div class="eyebrow" style="color:var(--x)">Ideate</div><div>${esc(m.horizon.ideate)}</div></div>` : ''}
+        <label class="f" style="max-width:76ch;margin-top:10px">Your notes for this module (saved to the hub)<textarea data-action="note" data-mod="${m.id}" placeholder="Ideas, the answer to the ideation prompt, what confused you…">${esc((state.notes[m.id] || {}).text || '')}</textarea></label>
+      </section>
+      <section class="sect" id="s-checklist"><div class="eyebrow">Done means</div><h2>Checklist</h2><div style="max-width:76ch">${checklistHtml(m)}</div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:14px">${m.n > 1 ? `<a class="btn" href="#curriculum/${modByN(m.n - 1).id}">← ${esc(modByN(m.n - 1).title)}</a>` : ''}${m.n < PLAN.modules.length ? `<a class="btn" href="#curriculum/${modByN(m.n + 1).id}">${esc(modByN(m.n + 1).title)} →</a>` : ''}</div>
+      </section>
+      ${deepHtml(m)}
+    </article>`;
+    return `<div class="curr">${rail}${doc}</div>`;
+  }
+
+  function exampleHtml(ex, i) {
+    const tbl = ex.table ? `<div class="tbl-wrap"><table class="tbl"><thead><tr>${ex.table.head.map(h => `<th>${esc(h)}</th>`).join('')}</tr></thead><tbody>${ex.table.rows.map(r => `<tr>${r.map(c => `<td>${esc(c)}</td>`).join('')}</tr>`).join('')}</tbody></table></div>` : '';
+    return `<article class="example"><div class="mono muted">example ${i + 1}</div><h3>${esc(ex.title)}</h3><div class="setup"><span class="eyebrow">Setup</span><div>${inline(ex.setup)}</div></div><ol class="exsteps">${(ex.steps || []).map(s => `<li>${inline(s)}</li>`).join('')}</ol>${tbl}<div class="what-changed"><span class="eyebrow">What changed</span><div>${inline(ex.result)}</div></div></article>`;
+  }
+  function puzzleHtml(m, p, i) {
+    const pid = `${m.id}-p${i}`;
+    return `<div class="puzzle" id="pz-${pid}">
+      <div class="mono muted">${esc(m.id.toUpperCase())} · puzzle ${i + 1}</div>
+      <div class="q">${esc(p.q)}</div>
+      <div class="row"><button class="btn small" data-action="reveal" data-target="hint-${pid}">Hint</button><button class="btn small" data-action="reveal" data-target="ans-${pid}">Answer</button>${state.sample ? `<button class="btn small" data-action="check-toggle" data-target="chk-${pid}">Check my reasoning</button>` : ''}</div>
+      <div class="hint" id="hint-${pid}" hidden><span class="eyebrow">Hint</span><div>${esc(p.hint)}</div></div>
+      <div class="ans" id="ans-${pid}" hidden><span class="eyebrow">Reference answer</span><div>${esc(p.a)}</div></div>
+      <div class="check" id="chk-${pid}" hidden><textarea id="chk-in-${pid}" placeholder="Write your reasoning and answer here, then ask for a verdict."></textarea><div class="row"><button class="btn small primary" data-action="check-run" data-mod="${m.id}" data-i="${i}" data-target="${pid}">Get a verdict</button><span class="muted small">Uses your Claude account; the reference answer is sent along for grading.</span></div><div class="thread" id="chk-out-${pid}" hidden></div></div>
+    </div>`;
+  }
+
+  function forecastSuggestHtml(m, p, i) {
+    const id = `f_${m.id}_${i}`; const f = state.forecasts[id];
+    if (f) return `<div class="forecast"><div><div class="q">${esc(f.q)}</div><div class="meta"><span>${esc(f.kind)}</span><span>resolve by ${esc(f.by)}</span><span>${esc(f.source || '')}</span></div></div><div class="ctl"><span class="p num">${esc(f.p)}%</span>${f.resolved ? `<span class="res ${f.resolved}">${f.resolved === 'yes' ? 'happened' : "didn't"}</span>` : `<span class="res open">logged</span>`}<a class="btn small" href="#forecasts">journal</a></div></div>`;
+    return `<div class="forecast"><div><div class="q">${esc(p.q)}</div><div class="meta"><span>${esc(p.kind)}</span><span>resolve by ${esc(p.by)}</span><span>${esc(p.source || '')}</span></div></div><div class="ctl"><input type="number" min="1" max="99" value="50" id="p-${id}" aria-label="probability percent"><span class="mono muted">%</span><button class="btn small primary" data-action="log-forecast" data-mod="${m.id}" data-i="${i}" data-id="${id}">Log</button></div></div>`;
+  }
+
+  function viewForecasts() {
+    const list = forecastList(); const b = brier(); const open = list.filter(f => !f.resolved); const res = list.filter(f => f.resolved);
+    const row = f => {
+      const overdue = !f.resolved && f.by && parse(f.by) < today();
+      return `<div class="forecast" id="fc-${esc(f.id)}"><div><div class="q">${esc(f.q)}</div><div class="meta"><span>${esc(f.kind || '')}</span><span>${f.module ? 'module ' + esc(f.module) : 'custom'}</span><span>by ${esc(f.by || '—')}${overdue ? ' · <b style="color:var(--warn)">due</b>' : ''}</span>${f.source ? `<span>${esc(f.source)}</span>` : ''}${f.resolved ? `<span>brier ${(Math.pow((Number(f.p) || 0) / 100 - (f.resolved === 'yes' ? 1 : 0), 2)).toFixed(3)}</span>` : ''}</div>${f.note ? `<div class="small muted" style="margin-top:4px">${esc(f.note)}</div>` : ''}</div>
+        <div class="ctl">${f.resolved ? `<span class="p num">${esc(f.p)}%</span><span class="res ${f.resolved}">${f.resolved === 'yes' ? 'happened' : "didn't"}</span><button class="btn small" data-action="unresolve" data-id="${esc(f.id)}">reopen</button>` : `<input type="number" min="1" max="99" value="${esc(f.p)}" data-action="edit-p" data-id="${esc(f.id)}" aria-label="probability"><span class="mono muted">%</span><button class="btn small" data-action="resolve" data-id="${esc(f.id)}" data-v="yes">Happened</button><button class="btn small" data-action="resolve" data-id="${esc(f.id)}" data-v="no">Didn't</button><button class="btn small" data-action="delete-forecast" data-id="${esc(f.id)}" title="delete">✕</button>`}</div></div>`;
+    };
+    return `
+    <div class="grid three" style="margin-bottom:20px">
+      <div class="card"><div class="stat"><span class="v num">${list.length}</span><span class="l">forecasts logged</span></div></div>
+      <div class="card"><div class="stat"><span class="v num">${res.length}</span><span class="l">resolved</span></div></div>
+      <div class="card"><div class="stat"><span class="v num">${b ? b.score.toFixed(3) : '—'}</span><span class="l">Brier score · coin flip = 0.250</span></div></div>
+    </div>
+    <div class="grid two" style="align-items:start">
+      <div>
+        <h2 style="margin-bottom:10px">Open <span class="muted" style="font-weight:500">(${open.length})</span></h2>
+        ${open.length ? open.map(row).join('') : `<div class="empty">Nothing logged yet. Each module suggests two — or add your own on the right.</div>`}
+        ${res.length ? `<h2 style="margin:22px 0 10px">Resolved <span class="muted" style="font-weight:500">(${res.length})</span></h2>${res.map(row).join('')}` : ''}
+      </div>
+      <div class="card">
+        <div class="eyebrow">Add a forecast</div>
+        <div style="display:grid;gap:10px;margin-top:10px">
+          <label class="f">Question (binary, with a clear resolution)<textarea id="nf-q" placeholder="By Jun 30, 2027, will …?"></textarea></label>
+          <div class="grid two"><label class="f">Probability (%)<input type="number" id="nf-p" min="1" max="99" value="50"></label><label class="f">Resolve by<input type="date" id="nf-by" value="${iso(addDays(today(), 365))}"></label></div>
+          <label class="f">How it resolves (source)<input type="text" id="nf-src" placeholder="e.g. LMArena leaderboard; RBI press release"></label>
+          <div><button class="btn primary" data-action="add-forecast">Log forecast</button></div>
+        </div>
+        <div class="muted small" style="margin-top:14px">Brier = mean of (p − outcome)². Lower is better; 0.25 is what always saying 50% scores; superforecasters land near 0.15–0.20 on hard questions.</div>
+      </div>
+    </div>`;
+  }
+
+  function viewDigests() {
+    const list = digestList();
+    const head = `<div class="today-head"><div><div class="eyebrow">In the wild + the horizon · weekly</div><h1>Digests</h1></div><div class="muted small">Next digest lands Monday ${esc(fmt(nextMonday()))} — researched for the current module and posted here.</div></div>`;
+    if (!list.length) return head + `<div class="empty">No digests yet. The first one is written by the weekly task; it will appear here and on Today.</div>`;
+    return head + list.map((d, i) => `<details class="digest" ${i === 0 ? 'open' : ''}><summary><span class="chip r">week ${esc(d.week || '')}</span><span class="mono muted">${esc(d.date || '')}</span><span class="t">${esc(d.title || 'Digest')}</span><span class="sum">${esc(d.summary || '')}</span></summary><div class="body prose" style="max-width:76ch">${md(d.markdown || '')}${Array.isArray(d.sources) && d.sources.length ? `<div class="src"><b>Sources</b><ul>${d.sources.map(s => `<li>${s.url ? `<a href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.title || s.url)}</a>` : esc(s.title || '')}</li>`).join('')}</ul></div>` : ''}</div></details>`).join('');
+  }
+
+  function viewPuzzles() {
+    const cur = currentModule().n;
+    return `<div class="today-head"><div><div class="eyebrow">Puzzles &amp; Fermi estimates · all modules</div><h1>Puzzles</h1></div><div class="muted small">Reveal the hint before the answer. ${state.sample ? 'Ask for a verdict on your own reasoning — it\'s graded against the reference.' : ''}</div></div>` +
+      PLAN.modules.map(m => `<details class="digest" ${m.n === cur ? 'open' : ''}><summary><span class="chip warm">${esc(streamLabel(m))}</span><span class="t">${esc(m.title)}</span><span class="mono muted">${m.puzzles.length} puzzle${m.puzzles.length === 1 ? '' : 's'}</span></summary><div class="body">${m.puzzles.map((p, i) => puzzleHtml(m, p, i)).join('')}</div></details>`).join('');
+  }
+
+  function viewGuide() {
+    const s = PLAN.streams;
+    return `
+    <div class="today-head"><div><div class="eyebrow">How this works</div><h1>Guide</h1></div><div class="muted small">Start ${esc(fmtLong(start()))} · ${totalDays()} days (about ${totalWeeks()} weeks) · summit ${esc(fmtLong(summitDate()))}</div></div>
+    <div class="grid three" style="margin-bottom:22px">
+      ${[['k', s.knowledge], ['r', s.relevance], ['x', s.excitement]].map(([c, st]) => `<div class="card"><div class="eyebrow" style="color:var(--${c})">${esc(st.short)}</div><h3 style="margin:4px 0 8px">${esc(st.label)}</h3><ul class="prose small" style="margin:0;padding-left:1.2em">${st.questions.map(q => `<li>${esc(q)}</li>`).join('')}</ul></div>`).join('')}
+    </div>
+    <div class="grid two" style="align-items:start">
+      <div class="col">
+        <section class="card"><div class="eyebrow">The shape</div><div class="prose" style="margin-top:8px"><p><b>Knowledge</b> is the spine: twelve modules of about ten hours each (the capstone is sixteen), every one built the same way: a reading page with a few core frameworks, four puzzles, a tutor-led exercise and a small prototype that Claude Code builds for you. Each prototype adds a chapter to a running dossier on one idea of yours; the capstone assembles it. The original deep material (the maths and the from-scratch builds) is kept in each module under <i>Under the hood</i>, and is optional. <b>Relevance</b> arrives as the weekly digest plus a product teardown per module — B2C and B2B products drawing real market interest, across many fields rather than one. <b>Excitement</b> is the Horizon section of each module, the frontier half of the digest, and the forecast journal — where you commit to a view of the future and get scored.</p><p>The modules climb from how a model learns, through language models, scale, post-training and reasoning, to agents, evals, economics, trust and strategy. The last module is the capstone: a product spec or a strategy thesis you can defend.</p></div></section>
+        <section class="card"><div class="eyebrow">Rituals</div><div style="margin-top:6px">${PLAN.rituals.map(r => `<div class="ritual"><b>${esc(r.name)}</b><span class="small">${esc(r.why)}</span></div>`).join('')}</div></section>
+        <section class="card"><div class="eyebrow">The week</div><dl class="kv" style="margin-top:8px">${PLAN.weekTemplate.map(u => `<dt>${esc(u.day)} · ${u.hours} h</dt><dd><b style="font-family:var(--display)">${esc(u.unit)}</b> — <span class="small">${esc(u.note)}</span></dd>`).join('')}</dl></section>
+        <section class="card" id="s-setup"><div class="eyebrow">Setup (before day 1)</div><ol class="prose small" style="margin:8px 0 0;padding-left:1.2em">${PLAN.setup.map(x => `<li>${esc(x)}</li>`).join('')}</ol>
+        </section>
+      </div>
+      <div class="col">
+        <section class="card"><div class="eyebrow">The tutor · /ai-tutor</div><div class="prose small" style="margin-top:8px"><p>A saved skill you can run in any Claude session. It reads your progress from this hub, then runs one unit Socratically. Try:</p><ul><li><b>/ai-tutor</b> — pick up where you are (the current module's next unit).</li><li><b>/ai-tutor quiz</b> — five questions on this week's module; failing is information.</li><li><b>/ai-tutor exercise</b> — run the module's scenario exercise: it questions you, you decide.</li><li><b>/ai-tutor build</b> — design the prototype together before Claude Code builds it.</li><li><b>/ai-tutor explain &lt;idea&gt;</b> — first principles up, with a worked example.</li><li><b>/ai-tutor review</b> — spaced repetition over earlier modules.</li><li><b>/ai-tutor forecast</b> — discuss and log predictions; resolve due ones.</li></ul><p>It writes progress back here, so the checkboxes and streak update live.</p></div></section>
+        <section class="card"><div class="eyebrow">The digest · Mondays, early morning</div><div class="prose small" style="margin-top:8px"><p>A scheduled task researches the past week's AI news through the lens of your current module and posts a digest here: a product teardown (the B2C or B2B product drawing the most market interest that week), where and by whom things are being applied — consumer, enterprise and at least one frontier field — impact evidence, the frontier, one ideation prompt and one forecast prompt, with sources.</p><p>To retune it (after week 13, or if you change focus), tell any Claude session what the digest should track; it can update the task's instructions.</p></div></section>
+        <section class="card"><div class="eyebrow">Forecasts</div><div class="prose small" style="margin-top:8px"><p>Each module suggests two binary questions with a resolution date and a source. Log a probability; resolve when due; the Brier score on the Forecasts page is your calibration. Beat 0.25 (a coin flip); aim for 0.20.</p></div></section>
+        <section class="card"><div class="eyebrow">Capstone (module 12)</div><div class="prose small" style="margin-top:8px"><p>Either a <b>product spec</b> for your dossier idea, with evals, unit economics and a trust plan, plus a prototype; or a <b>strategy thesis</b> on a field you care about, with 20 dated forecasts. Decide when you start module 12.</p></div></section>
+        <section class="card"><div class="eyebrow">After the ascent</div><ul class="prose small" style="margin:8px 0 0;padding-left:1.2em">${PLAN.after90.map(x => `<li>${esc(x)}</li>`).join('')}</ul></section>
+        <section class="card" id="s-brief"><div class="eyebrow">How I learn · standing instructions</div><div class="muted small" style="margin-top:6px">Read by the /ai-tutor skill at the start of every session and by the in-page 'Check my reasoning' and 'Go deeper' buttons. Edit freely; it saves to the hub.</div><label class="f" style="margin-top:8px">Instructions<textarea id="set-brief" style="min-height:140px">${esc(learnerBrief())}</textarea></label><div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px"><button class="btn small primary" data-action="save-brief">Save instructions</button></div></section>
+        <section class="card" id="s-books"><div class="eyebrow">Books, in the order to read them</div><div class="muted small" style="margin-top:6px">Optional. One at a time, a chapter whenever you have the energy.</div>${(PLAN.books || []).map(b => `<div class="primer"><div class="pn">${b.order}</div><div><h4 style="margin:0 0 2px">${esc(b.title)}</h4><div class="mono muted">${esc(b.by)} · ${esc(b.when)}</div><p class="small" style="margin:6px 0 0">${esc(b.why)}</p></div></div>`).join('')}</section>
+        <section class="card" id="s-math"><div class="eyebrow">Optional: the five ideas of maths behind it all</div><div class="muted small" style="margin-top:6px">You do not need these to follow the framework pages. They are here if you get curious about why something works. Each one: the idea in plain words, a numerical example, where it shows up, and a good 20-minute video.</div>${(PLAN.mathPrimer || []).map((p, i) => `<div class="primer"><div class="pn">${i + 1}</div><div><h4 style="margin:0 0 4px">${esc(p.name)}</h4><p class="small" style="margin:0 0 6px">${esc(p.plain)}</p><div class="ex small"><span class="eyebrow">Example</span> ${esc(p.example)}</div><div class="small muted" style="margin-top:6px"><b>Used in:</b> ${esc(p.used)} · <a href="${esc(p.link)}" target="_blank" rel="noopener">${esc(p.linkLabel)}</a></div></div></div>`).join('')}</section>
+        <section class="card"><div class="eyebrow">Settings</div><div style="display:grid;gap:10px;margin-top:8px"><label class="f">Start date (shifts every week's dates)<input type="date" id="set-start" value="${esc(state.settings.start)}"></label><div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn small" data-action="save-start">Save start date</button><button class="btn small" data-action="export">Copy my data as JSON</button></div><div class="muted small">Progress, forecasts and notes are stored in this page's database (${state.db ? 'connected' : 'not connected in this view — using this browser only'}).</div></div></section>
+      </div>
+    </div>`;
+  }
+
+  // ───────────────────────── notes: highlights from pages and pasted tutor replies
+  state.highlights = state.highlights || {}; state.noteFilter = { q: '', mod: '', src: '', star: false };
+  const NOTE_SOURCES = ['Reading page', 'Exercise', 'Prototype', 'Puzzles', 'Field notes', 'Horizon', 'Digest', 'Guide', 'Tutor reply', 'Other'];
+  const noteList = () => Object.values(state.highlights).sort((a, b) => String(b.createdAt || '').localeCompare(String(a.createdAt || '')));
+  const shortDate = iso => { try { return new Date(iso).toLocaleDateString(undefined, { day: 'numeric', month: 'short' }); } catch (e) { return ''; } };
+  const modLabel = id => { const m = id ? modById(id) : null; return m ? `Module ${m.n}` : 'General'; };
+  function sectionLabel(node) {
+    const sec = node && node.closest ? node.closest('.sect[id]') : null; const id = sec ? sec.id : '';
+    const map = { 's-framework': 'Reading page', 's-exercise': 'Exercise', 's-prototype': 'Prototype', 's-puzzles': 'Puzzles', 's-field': 'Field notes', 's-horizon': 'Horizon', 's-readings': 'Reading page', 's-deep': 'Reading page', 's-overview': 'Reading page', 's-forecasts': 'Other', 's-checklist': 'Other' };
+    if (map[id]) return map[id];
+    return currentView === 'digests' ? 'Digest' : currentView === 'guide' ? 'Guide' : 'Other';
+  }
+  function hashModuleId() { const [v, arg] = (location.hash || '').slice(1).split('/'); return v === 'curriculum' ? (arg && modById(arg) ? arg : currentModule().id) : ''; }
+  async function saveNote(n) { state.highlights[n.id] = n; await writeDoc('highlights/' + n.id, n); }
+  function noteCardHtml(n) {
+    return `<article class="note" id="nt-${esc(n.id)}"><div class="note-meta">${n.module ? chip(modLabel(n.module), 'warm') : chip('General')}${chip(n.source || 'Other', 'k')}<span class="mono muted">${esc(shortDate(n.createdAt))}</span>${n.where ? `<span class="muted small">· ${esc(n.where)}</span>` : ''}</div>
+      <blockquote class="note-text">${md(n.text)}</blockquote>
+      <label class="f">My comment<textarea data-action="note-comment" data-id="${esc(n.id)}" placeholder="Why this matters, what you'll do with it…">${esc(n.comment || '')}</textarea></label>
+      <div class="note-actions"><button class="btn small ${n.starred ? 'done' : ''}" data-action="star-note" data-id="${esc(n.id)}">${n.starred ? '★ Starred' : '☆ Star'}</button><button class="btn small" data-action="copy-note" data-id="${esc(n.id)}">Copy</button><button class="btn small" data-action="del-note" data-id="${esc(n.id)}">Delete</button></div></article>`;
+  }
+  function noteListHtml() {
+    const f = state.noteFilter; const q = (f.q || '').toLowerCase();
+    const list = noteList().filter(n => (!f.mod || (f.mod === '_general' ? !n.module : n.module === f.mod)) && (!f.src || n.source === f.src) && (!f.star || n.starred) && (!q || ((n.text || '') + ' ' + (n.comment || '') + ' ' + (n.where || '')).toLowerCase().includes(q)));
+    if (!noteList().length) return `<div class="empty">Nothing saved yet. Select any text on a page and press "Save to notes", or paste a tutor reply above.</div>`;
+    if (!list.length) return `<div class="empty">No notes match these filters.</div>`;
+    return list.map(noteCardHtml).join('');
+  }
+  function viewNotes() {
+    const f = state.noteFilter; const all = noteList(); const modNotes = PLAN.modules.filter(m => (state.notes[m.id] || {}).text);
+    const defMod = currentModule().id;
+    return `
+    <div class="today-head"><div><div class="eyebrow">Highlights and tutor replies</div><h1>Notes</h1></div><div class="muted small">${all.length} saved · select text on any page to add it here</div></div>
+    <div class="grid two" style="align-items:start;margin-bottom:18px">
+      <section class="card">
+        <div class="eyebrow">Add a note</div>
+        <div style="display:grid;gap:10px;margin-top:10px">
+          <label class="f">Paste a tutor reply, a highlight, or write your own<textarea id="an-text" style="min-height:130px" placeholder="Paste text here…"></textarea></label>
+          <div class="grid two"><label class="f">From<select id="an-src">${NOTE_SOURCES.map(s => `<option ${s === 'Tutor reply' ? 'selected' : ''}>${s}</option>`).join('')}</select></label><label class="f">Module<select id="an-mod"><option value="">General</option>${PLAN.modules.map(m => `<option value="${m.id}" ${m.id === defMod ? 'selected' : ''}>Module ${m.n}: ${esc(m.title.slice(0, 40))}</option>`).join('')}</select></label></div>
+          <label class="f">My comment (optional)<input type="text" id="an-comment" placeholder="Why this matters"></label>
+          <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn primary" data-action="add-note">Add to notes</button><button class="btn" data-action="copy-all-notes">Copy all as Markdown</button></div>
+        </div>
+      </section>
+      <section class="card">
+        <div class="eyebrow">Find</div>
+        <div style="display:grid;gap:10px;margin-top:10px">
+          <label class="f">Search<input type="text" id="nf-search" value="${esc(f.q)}" placeholder="Search notes and comments"></label>
+          <div class="grid two"><label class="f">Module<select id="nf-mod"><option value="">All</option><option value="_general" ${f.mod === '_general' ? 'selected' : ''}>General</option>${PLAN.modules.map(m => `<option value="${m.id}" ${f.mod === m.id ? 'selected' : ''}>Module ${m.n}</option>`).join('')}</select></label><label class="f">From<select id="nf-src"><option value="">All</option>${NOTE_SOURCES.map(s => `<option ${f.src === s ? 'selected' : ''}>${s}</option>`).join('')}</select></label></div>
+          <label class="check" style="border:0;padding:0"><input type="checkbox" id="nf-star" ${f.star ? 'checked' : ''}><span style="text-decoration:none">Starred only</span></label>
+        </div>
+        ${modNotes.length ? `<details class="digest" style="margin:14px 0 0;padding:10px 14px"><summary><span class="t" style="font-size:15px">My per-module notes (${modNotes.length})</span></summary><div class="body">${modNotes.map(m => `<h4 style="margin:10px 0 4px"><a href="#curriculum/${m.id}">Module ${m.n}</a></h4><div class="prose small">${md(state.notes[m.id].text)}</div>`).join('')}</div></details>` : ''}
+      </section>
+    </div>
+    <div id="notes-list">${noteListHtml()}</div>`;
+  }
+  const notesMarkdown = list => list.map(n => `### ${modLabel(n.module)} · ${n.source || 'Other'} · ${shortDate(n.createdAt)}${n.where ? ' · ' + n.where : ''}\n\n${String(n.text || '').split('\n').map(l => '> ' + l).join('\n')}\n${n.comment ? '\nMy comment: ' + n.comment + '\n' : ''}`).join('\n');
+  async function copyText(t) { try { await navigator.clipboard.writeText(t); toast('Copied'); } catch (e) { const ta = document.createElement('textarea'); ta.value = t; ta.style.cssText = 'position:fixed;left:-9999px'; document.body.appendChild(ta); ta.select(); try { document.execCommand('copy'); toast('Copied'); } catch (e2) { toast('Could not copy'); } ta.remove(); } }
+  const refreshNoteList = () => { const el = document.getElementById('notes-list'); if (el) el.innerHTML = noteListHtml(); };
+  main.addEventListener('click', async e => {
+    const el = e.target.closest('[data-action]'); if (!el) return; const a = el.dataset.action;
+    if (a === 'add-note') {
+      const text = ($('#an-text').value || '').trim(); if (!text) { toast('Paste or write something first'); return; }
+      const n = { id: uid(), text, comment: ($('#an-comment').value || '').trim(), module: $('#an-mod').value || '', source: $('#an-src').value || 'Other', where: '', createdAt: new Date().toISOString(), starred: false };
+      await saveNote(n); $('#an-text').value = ''; $('#an-comment').value = ''; toast('Added to notes'); rerenderIfView(['notes']);
+    }
+    if (a === 'star-note') { const n = state.highlights[el.dataset.id]; if (!n) return; n.starred = !n.starred; await saveNote(n); refreshNoteList(); }
+    if (a === 'copy-note') { const n = state.highlights[el.dataset.id]; if (n) await copyText(notesMarkdown([n])); }
+    if (a === 'copy-all-notes') { await copyText(notesMarkdown(noteList())); }
+    if (a === 'del-note') {
+      if (el.dataset.armed !== '1') { el.dataset.armed = '1'; el.textContent = 'Really delete?'; setTimeout(() => { el.dataset.armed = ''; el.textContent = 'Delete'; }, 3000); return; }
+      delete state.highlights[el.dataset.id]; await deleteDoc('highlights/' + el.dataset.id); toast('Deleted'); refreshNoteList();
+    }
+  });
+  main.addEventListener('change', async e => {
+    const t = e.target;
+    if (t.matches && t.matches('textarea[data-action="note-comment"]')) { const n = state.highlights[t.dataset.id]; if (!n) return; n.comment = t.value; await saveNote(n); toast('Comment saved'); }
+    if (t.id === 'nf-mod') { state.noteFilter.mod = t.value; refreshNoteList(); }
+    if (t.id === 'nf-src') { state.noteFilter.src = t.value; refreshNoteList(); }
+    if (t.id === 'nf-star') { state.noteFilter.star = t.checked; refreshNoteList(); }
+  });
+  main.addEventListener('input', e => { if (e.target.id === 'nf-search') { state.noteFilter.q = e.target.value; refreshNoteList(); } });
+
+  // "Save to notes" button that appears next to any text you select on a page
+  const selBtn = document.createElement('button'); selBtn.className = 'selbtn'; selBtn.textContent = '＋ Save to notes'; selBtn.hidden = true; document.body.appendChild(selBtn);
+  let selData = null;
+  function updateSel() {
+    const s = window.getSelection(); if (!s || s.isCollapsed || !s.rangeCount) { selBtn.hidden = true; return; }
+    const text = s.toString().replace(/\u{1F516}/gu, '').trim(); const node = s.anchorNode && (s.anchorNode.nodeType === 1 ? s.anchorNode : s.anchorNode.parentElement);
+    if (text.length < 4 || !node || !main.contains(node) || node.closest('textarea, input, button, .note')) { selBtn.hidden = true; return; }
+    const r = s.getRangeAt(0).getBoundingClientRect(); const mid = hashModuleId(); const m = mid ? modById(mid) : null;
+    const dig = node.closest('details.digest'); const dTitle = dig ? ((dig.querySelector('summary .t') || {}).textContent || '') : '';
+    selData = { text, source: sectionLabel(node), module: mid, where: m ? m.title : dTitle };
+    selBtn.style.top = (window.scrollY + r.top - 40) + 'px'; selBtn.style.left = Math.max(8, Math.min(window.innerWidth - 150, window.scrollX + r.left)) + 'px'; selBtn.hidden = false;
+  }
+  document.addEventListener('mouseup', () => setTimeout(updateSel, 10));
+  document.addEventListener('keyup', e => { if (e.key === 'Shift' || (e.key || '').startsWith('Arrow')) setTimeout(updateSel, 10); });
+  document.addEventListener('touchend', () => setTimeout(updateSel, 350));
+  window.addEventListener('scroll', () => { if (!selBtn.hidden) selBtn.hidden = true; }, { passive: true });
+  selBtn.addEventListener('mousedown', e => e.preventDefault());
+  selBtn.addEventListener('click', async () => {
+    if (!selData) return;
+    const n = { id: uid(), text: selData.text.slice(0, 6000), comment: '', module: selData.module, source: selData.source, where: selData.where, createdAt: new Date().toISOString(), starred: false };
+    await saveNote(n); window.getSelection().removeAllRanges(); selBtn.hidden = true; selData = null; toast('Saved to notes'); rerenderIfView(['notes']);
+  });
+
+  // ───────────────────────── bookmarks: keep your place in a module's reading page
+  state.bookmarks = state.bookmarks || {}; let pendingBm = null;
+  const BM_SEL = '.prose > p, .prose > ul, .prose > ol, .prose > h5, .callout, .card, .puzzle, .example, .readings > li, .steps > li, .applied > li, .people > li, .forecast, .timeline > li, .kv';
+  const latestBookmark = () => Object.values(state.bookmarks).filter(b => b && b.module && modById(b.module)).sort((a, b) => String(b.at || '').localeCompare(String(a.at || '')))[0] || null;
+  function tagBookmarkables() {
+    document.querySelectorAll('article .sect').forEach(sec => {
+      let i = 0; sec.querySelectorAll(BM_SEL).forEach(el => {
+        if (el.closest('.note, .rail, #deeper-out')) return;
+        el.dataset.bm = sec.id + ':' + (i++); el.classList.add('bmk');
+        const b = document.createElement('button'); b.className = 'bm-btn'; b.type = 'button'; b.dataset.action = 'bm-set'; b.title = 'Bookmark: continue from here'; b.setAttribute('aria-label', 'Bookmark this spot'); b.textContent = '🔖'; el.appendChild(b);
+      });
+    });
+  }
+  function markBookmark() {
+    document.querySelectorAll('.bm-on').forEach(el => el.classList.remove('bm-on'));
+    const mid = hashModuleId(); const b = mid && state.bookmarks[mid]; const old = document.getElementById('bm-banner'); if (old) old.remove();
+    if (!b) return;
+    const el = document.querySelector(`[data-bm="${b.key}"]`); if (el) el.classList.add('bm-on');
+    const host = document.getElementById('s-overview'); if (!host) return;
+    host.insertAdjacentHTML('beforebegin', `<div class="callout bm-banner" id="bm-banner"><div class="eyebrow">Your bookmark</div><div class="small">${esc(b.section || '')}: “${esc(b.snippet || '')}…”</div><div style="margin-top:8px;display:flex;gap:8px;flex-wrap:wrap"><button class="btn small primary" data-action="bm-jump" data-mod="${esc(b.module)}" data-key="${esc(b.key)}">Jump to it</button><button class="btn small" data-action="bm-clear" data-mod="${esc(b.module)}">Clear</button></div></div>`);
+  }
+  function scrollToBookmark(key) {
+    const el = document.querySelector(`[data-bm="${key}"]`);
+    if (!el) { toast('The page has changed; opened the module instead'); return; }
+    let d = el.closest('details'); while (d) { d.open = true; d = d.parentElement ? d.parentElement.closest('details') : null; }
+    setTimeout(() => el.scrollIntoView({ block: 'center' }), 40);
+  }
+  function afterRender(arg) {
+    if (currentView === 'curriculum') { initDiagrams(); tagBookmarkables(); markBookmark(); if (pendingPuzzle) { const pp = pendingPuzzle; pendingPuzzle = null; setTimeout(() => { const pe = document.getElementById('pz-' + pp.mod + '-p' + pp.i); if (pe) pe.scrollIntoView({ block: 'center' }); }, 90); } if (pendingBm) { const k = pendingBm; pendingBm = null; setTimeout(() => scrollToBookmark(k), 60); } }
+    if (currentView === 'today') {
+      const slot = document.getElementById('today-bm'); const b = latestBookmark();
+      if (slot && b) { const m = modById(b.module); slot.innerHTML = `<section class="card" style="margin-bottom:16px"><div class="eyebrow">Continue reading</div><div style="margin:6px 0 8px"><b style="font-family:var(--display)">${esc(m.title)}</b><div class="muted small">${esc(b.section || '')}: “${esc(b.snippet || '')}…”</div></div><button class="btn small primary" data-action="bm-jump" data-mod="${esc(b.module)}" data-key="${esc(b.key)}">Pick up where you left off</button></section>`; }
+    }
+  }
+  main.addEventListener('click', async e => {
+    const el = e.target.closest('[data-action]'); if (!el) return; const a = el.dataset.action;
+    if (a === 'bm-set') {
+      e.preventDefault(); const block = el.closest('[data-bm]'); if (!block) return; const mid = hashModuleId(); if (!mid) return; const key = block.dataset.bm;
+      const cur = state.bookmarks[mid];
+      if (cur && cur.key === key) { delete state.bookmarks[mid]; await deleteDoc('bookmarks/' + mid); toast('Bookmark removed'); markBookmark(); return; }
+      const clone = block.cloneNode(true); clone.querySelectorAll('.bm-btn').forEach(x => x.remove());
+      const snippet = (clone.innerText || clone.textContent || '').replace(/\s+/g, ' ').trim().slice(0, 90);
+      const b = { id: mid, module: mid, key, snippet, section: sectionLabel(block), at: new Date().toISOString() };
+      state.bookmarks[mid] = b; await writeDoc('bookmarks/' + mid, b); toast('Bookmarked. Pick up from the Today tab.'); markBookmark();
+    }
+    if (a === 'bm-jump') {
+      const mid = el.dataset.mod; const key = el.dataset.key; pendingBm = key;
+      if (location.hash === '#curriculum/' + mid) { pendingBm = null; scrollToBookmark(key); } else { location.hash = '#curriculum/' + mid; }
+    }
+    if (a === 'bm-clear') { const mid = el.dataset.mod; delete state.bookmarks[mid]; await deleteDoc('bookmarks/' + mid); toast('Bookmark cleared'); markBookmark(); }
+  });
+
+  // ───────────────────────── diagrams (inline SVG and small interactive widgets)
+  const DIAGRAMS = Object.assign({}, typeof DG_X !== 'undefined' ? DG_X : {}, typeof DG_Y !== 'undefined' ? DG_Y : {});
+  const DG_MAP = typeof DIAGRAM_MAP !== 'undefined' ? DIAGRAM_MAP : {};
+  function diagramsHtml(m) {
+    const keys = (DG_MAP[m.id] || []).filter(k => DIAGRAMS[k]); if (!keys.length) return '';
+    return `<div class="diagrams">${keys.map(k => { const d = DIAGRAMS[k]; return `<figure class="diagram" data-dg="${k}">${d.title ? `<div class="dg-title">${esc(d.title)}</div>` : ''}<div class="dg-body">${d.html || d.svg || ''}</div>${d.caption ? `<figcaption>${esc(d.caption)}</figcaption>` : ''}</figure>`; }).join('')}</div>`;
+  }
+  function initDiagrams() {
+    document.querySelectorAll('figure.diagram[data-dg]').forEach(f => { const d = DIAGRAMS[f.dataset.dg]; if (d && typeof d.init === 'function') { try { d.init(f.querySelector('.dg-body')); } catch (e) { console.warn('diagram init failed', f.dataset.dg, e); } } });
+  }
+
+  // ───────────────────────── router
+  let currentView = 'today';
+  function route() {
+    const h = (location.hash || '#today').slice(1); const [view, arg] = h.split('/');
+    const views = { today: viewToday, curriculum: () => viewCurriculum(arg), digests: viewDigests, forecasts: viewForecasts, puzzles: viewPuzzles, guide: viewGuide, notes: viewNotes, progress: viewProgress };
+    const fn = views[view] || viewToday; currentView = views[view] ? view : 'today';
+    document.querySelectorAll('nav.tabs a').forEach(a => { if (a.dataset.view === currentView) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current'); });
+    main.innerHTML = fn();
+    if (pendingScroll) { const el = document.getElementById('s-' + pendingScroll); pendingScroll = null; if (el) setTimeout(() => el.scrollIntoView({ behavior: 'smooth', block: 'start' }), 30); }
+    else if (currentView !== 'curriculum' || !arg) window.scrollTo({ top: 0 });
+    renderMeter();
+    afterRender(arg);
+  }
+  let pendingScroll = null;
+  function rerenderIfView(list) { if (list.includes(currentView)) { const y = window.scrollY; route(); window.scrollTo({ top: y }); } }
+  window.addEventListener('hashchange', route);
+
+  // ───────────────────────── events
+  main.addEventListener('click', async e => {
+    const scroll = e.target.closest('[data-scroll]');
+    if (scroll) { pendingScroll = scroll.dataset.scroll; const href = scroll.getAttribute('href'); if (href === location.hash) { const el = document.getElementById('s-' + pendingScroll); pendingScroll = null; if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' }); e.preventDefault(); } return; }
+    const el = e.target.closest('[data-action]'); if (!el) return;
+    const a = el.dataset.action;
+    if (a === 'mark-day') {
+      const k = iso(today()); const on = !state.progress.days[k]; state.progress.days[k] = on;
+      if (!on) delete state.progress.days[k];
+      await writeProgress({ days: { [k]: on } }); renderMeter(); rerenderIfView(['today']); toast(on ? 'Counted. Keep the chain.' : 'Unmarked.');
+    }
+    if (a === 'reveal') { const t = document.getElementById(el.dataset.target); if (t) t.hidden = !t.hidden; }
+    if (a === 'check-toggle') { const t = document.getElementById(el.dataset.target); if (t) t.hidden = !t.hidden; }
+    if (a === 'check-run') { await runCheck(el.dataset.mod, Number(el.dataset.i), el.dataset.target, el); }
+    if (a === 'check-reply') { await runReply(el.dataset.mod, Number(el.dataset.i), el.dataset.target, el); }
+    if (a === 'deeper') { await runDeeper(el.dataset.mod, el); }
+    if (a === 'log-forecast') {
+      const m = modById(el.dataset.mod); const p = m.predictions[Number(el.dataset.i)]; const inp = document.getElementById('p-' + el.dataset.id); const pv = Math.min(99, Math.max(1, Number(inp && inp.value) || 50));
+      const f = { id: el.dataset.id, q: p.q, p: pv, by: p.by, kind: p.kind, source: p.source || '', module: m.n, created: new Date().toISOString(), resolved: null };
+      state.forecasts[f.id] = f; await writeDoc('forecasts/' + f.id, f); toast('Forecast logged'); rerenderIfView(['curriculum']);
+    }
+    if (a === 'add-forecast') {
+      const q = ($('#nf-q').value || '').trim(); if (!q) { toast('Write the question first'); return; }
+      const f = { id: uid(), q, p: Math.min(99, Math.max(1, Number($('#nf-p').value) || 50)), by: $('#nf-by').value || '', kind: 'custom', source: ($('#nf-src').value || '').trim(), module: null, created: new Date().toISOString(), resolved: null };
+      state.forecasts[f.id] = f; await writeDoc('forecasts/' + f.id, f); toast('Forecast logged'); rerenderIfView(['forecasts']);
+    }
+    if (a === 'resolve') { const f = state.forecasts[el.dataset.id]; if (!f) return; f.resolved = el.dataset.v; f.resolvedAt = new Date().toISOString(); await writeDoc('forecasts/' + f.id, f); toast(el.dataset.v === 'yes' ? 'Resolved: happened' : "Resolved: didn't happen"); rerenderIfView(['forecasts']); }
+    if (a === 'unresolve') { const f = state.forecasts[el.dataset.id]; if (!f) return; f.resolved = null; delete f.resolvedAt; await writeDoc('forecasts/' + f.id, f); rerenderIfView(['forecasts']); }
+    if (a === 'delete-forecast') { const f = state.forecasts[el.dataset.id]; if (!f) return; delete state.forecasts[el.dataset.id]; await deleteDoc('forecasts/' + f.id); toast('Deleted'); rerenderIfView(['forecasts']); }
+    if (a === 'save-brief') { const v = ($('#set-brief').value || '').trim(); state.settings.learnerBrief = v; saveLocal(); if (state.db) { try { setStatus('saving…'); await state.db.doc('settings/main').update({ learnerBrief: v, updatedAt: new Date().toISOString() }); setStatus('synced'); } catch (e) { try { await state.db.doc('settings/main').set({ start: state.settings.start || PLAN.start, learnerBrief: v, updatedAt: new Date().toISOString() }); setStatus('synced'); } catch (e2) { setStatus('save failed'); } } } toast('Instructions saved'); }
+    if (a === 'save-start') { const v = $('#set-start').value; if (!/^\d{4}-\d{2}-\d{2}$/.test(v)) { toast('Pick a date'); return; } state.settings.start = v; await writeDoc('settings/main', { start: v, updatedAt: new Date().toISOString() }); toast('Start date saved'); route(); }
+    if (a === 'export') { const data = JSON.stringify({ progress: state.progress, forecasts: state.forecasts, notes: state.notes, settings: state.settings }, null, 2); try { await navigator.clipboard.writeText(data); toast('Copied to clipboard'); } catch (err) { const ta = document.createElement('textarea'); ta.value = data; ta.style.cssText = 'position:fixed;left:-9999px'; document.body.appendChild(ta); ta.select(); try { document.execCommand('copy'); toast('Copied'); } catch (e2) { toast('Select and copy from the console'); console.log(data); } ta.remove(); } }
+  });
+  main.addEventListener('change', async e => {
+    const el = e.target.closest('[data-action]'); if (!el) return;
+    if (el.dataset.action === 'toggle-item') {
+      const m = modById(el.dataset.mod); const k = itemKey(m, Number(el.dataset.i)); const on = el.checked;
+      state.progress.items[k] = on; if (!on) delete state.progress.items[k];
+      const label = el.closest('.check'); if (label) label.classList.toggle('on', on);
+      await writeProgress({ items: { [k]: on } }); renderMeter();
+      document.querySelectorAll(`input[data-action="toggle-item"][data-mod="${m.id}"][data-i="${el.dataset.i}"]`).forEach(x => { x.checked = on; const l = x.closest('.check'); if (l) l.classList.toggle('on', on); });
+      if (on && moduleDone(m) === m.checklist.length) toast(`${streamLabel(m)} complete — altitude ${altLabel(m)} ✓`);
+      const rail = document.querySelector(`.rail a[href="#curriculum/${m.id}"] .w`); if (rail) rail.innerHTML = `${esc(modRange(m.n))} ${dots(m)}${m.n === currentModule().n ? ' · now' : ''}`;
+    }
+    if (el.dataset.action === 'edit-p') { const f = state.forecasts[el.dataset.id]; if (!f) return; f.p = Math.min(99, Math.max(1, Number(el.value) || f.p)); el.value = f.p; await writeDoc('forecasts/' + f.id, f); toast('Probability updated'); }
+  });
+  let noteT;
+  main.addEventListener('input', e => {
+    const el = e.target.closest('textarea[data-action="note"]'); if (!el) return;
+    const mid = el.dataset.mod; state.notes[mid] = { id: mid, text: el.value, updatedAt: new Date().toISOString() }; saveLocal();
+    clearTimeout(noteT); noteT = setTimeout(() => writeDoc('notes/' + mid, state.notes[mid]), 900);
+  });
+
+  // ───────────────────────── sample (in-page tutor)
+  const sampleCopy = code => ({ not_granted: 'Claude access was declined for this page.', rate_limited: 'Too many requests right now — try again in a minute.', refused: 'Claude declined this one; rephrase and try again.', upstream_error: 'Connection hiccup — try again.', session_expired: 'Please sign in again.' }[code] || 'Something went wrong; try again.');
+  // Each puzzle keeps a short conversation: learner answer → tutor verdict → (follow-up question) → learner reply → …
+  const threads = {};
+  const hasFollowUp = t => { const tail = String(t || '').trim().slice(-400); return /\?/.test(tail) && !/no further question/i.test(tail); };
+  function tutorTurn(out, text) { const d = document.createElement('div'); d.className = 'verdict'; d.textContent = text; out.appendChild(d); return d; }
+  function addReplyBox(out, mid, i, pid) {
+    const n = out.querySelectorAll('.followup').length;
+    const w = document.createElement('div'); w.className = 'followup';
+    w.innerHTML = `<span class="eyebrow">Your answer to the follow-up</span><textarea id="chk-fu-${pid}-${n}" placeholder="Answer the follow-up question above…"></textarea><div class="row"><button class="btn small primary" data-action="check-reply" data-mod="${esc(mid)}" data-i="${i}" data-target="${pid}" data-box="chk-fu-${pid}-${n}">Reply</button></div>`;
+    out.appendChild(w);
+  }
+  async function askTutor(prompt, out, btn) {
+    const d = tutorTurn(out, 'Thinking…'); btn.disabled = true;
+    try { const { text } = await state.sample(prompt, { onText: ({ text }) => { d.textContent = text; } }); d.textContent = text; return text; }
+    catch (e) { d.textContent = (e && e.text) ? e.text : sampleCopy(e && e.code); return null; }
+    finally { btn.disabled = false; }
+  }
+  async function runCheck(mid, i, pid, btn) {
+    const m = modById(mid); const p = m.puzzles[i]; const inp = document.getElementById('chk-in-' + pid); const out = document.getElementById('chk-out-' + pid);
+    const ans = (inp.value || '').trim(); if (!ans) { toast('Write your reasoning first'); return; }
+    if (!state.sample) { toast('Claude is not available in this view'); return; }
+    out.hidden = false; out.innerHTML = ''; threads[pid] = [{ who: 'Learner', text: ans }];
+    const prompt = `You are grading a learner's answer to a puzzle in a first-principles AI curriculum. Be rigorous, warm and brief. The learner's standing instructions about how they learn: ${learnerBrief()}\n\nPUZZLE: ${p.q}\nHINT: ${p.hint}\nREFERENCE ANSWER: ${p.a}\n\nLEARNER'S ANSWER:\n${ans}\n\nReply in at most 180 words with: (1) a verdict — Correct / Mostly right / Off track; (2) what's right; (3) the specific gap or error, if any, explained from first principles (not by restating the reference); (4) one follow-up question that would deepen understanding, as the final line. Plain text, no markdown headings.`;
+    const text = await askTutor(prompt, out, btn);
+    if (text) { threads[pid].push({ who: 'Tutor', text }); if (hasFollowUp(text)) addReplyBox(out, mid, i, pid); }
+  }
+  async function runReply(mid, i, pid, btn) {
+    const m = modById(mid); const p = m.puzzles[i]; const out = document.getElementById('chk-out-' + pid); const box = document.getElementById(btn.dataset.box);
+    const ans = (box && box.value || '').trim(); if (!ans) { toast('Write your answer first'); return; }
+    if (!state.sample) { toast('Claude is not available in this view'); return; }
+    const wrap = box.closest('.followup'); const mine = document.createElement('div'); mine.className = 'mine'; mine.textContent = ans; wrap.replaceWith(mine);
+    const thread = threads[pid] || (threads[pid] = []); thread.push({ who: 'Learner', text: ans });
+    const transcript = thread.map(t => `${t.who.toUpperCase()}:\n${t.text}`).join('\n\n');
+    const prompt = `You are a tutor in a first-principles AI curriculum, continuing a conversation about one puzzle. Be rigorous, warm and brief. The learner's standing instructions about how they learn: ${learnerBrief()}\n\nPUZZLE: ${p.q}\nHINT: ${p.hint}\nREFERENCE ANSWER: ${p.a}\n\nCONVERSATION SO FAR:\n${transcript}\n\nThe learner has just answered your last follow-up question. Reply in at most 150 words: say whether their answer is right, what's right, and close any gap from first principles. If there is still something worth probing, end with exactly one new follow-up question as the final line; if their understanding is now solid, end with the line "No further question — nicely done." Plain text, no markdown headings.`;
+    const text = await askTutor(prompt, out, btn);
+    if (text) { thread.push({ who: 'Tutor', text }); if (hasFollowUp(text)) addReplyBox(out, mid, i, pid); }
+    else { thread.pop(); addReplyBox(out, mid, i, pid); }
+  }
+  async function runDeeper(mid, btn) {
+    const m = modById(mid); const out = document.getElementById('deeper-out'); if (!out || !state.sample) return;
+    out.hidden = false; out.textContent = 'Thinking…'; btn.disabled = true;
+    const prompt = `A learner who loves solving problems but has limited background in advanced mathematics and deep learning is studying this section of a first-principles AI curriculum (module: "${m.title}"). Their standing instructions: ${learnerBrief()}\n\nIdentify the single hardest idea in the section. First say in two sentences why it matters (what we are trying to achieve). Then explain it from the basics upward — start from something they already know, define every term on first use, build the idea with one small worked numerical example showing how the input and output change, describe a picture they could draw, and finish with one question that checks understanding. Under 450 words, plain text, no headings.\n\nSECTION:\n${(m.frame || (m.deep[0] && m.deep[0].how) || '').slice(0, 6000)}`;
+    try { const { text } = await state.sample(prompt, { onText: ({ text }) => { out.textContent = text; } }); out.textContent = text; }
+    catch (e) { out.textContent = (e && e.text) ? e.text : sampleCopy(e && e.code); }
+    finally { btn.disabled = false; }
+  }
+
+  // ───────────────────────── boot
+  if (typeof EXTRA !== 'undefined') { for (const m of PLAN.modules) { const x = EXTRA[m.id]; if (x) { if (x.plain) m.plain = x.plain; if (x.examples) m.examples = x.examples; } } }
+  PLAN.modules = buildModules(PLAN.modules);
+  if (PLAN.name) { document.title = PLAN.name; $('.brand .name').textContent = PLAN.name; }
+  if (PLAN.subtitle) $('#mast-sub').textContent = PLAN.subtitle;
+  loadLocal();
+  route();
+  initDb();
+  initSample();
+})();
+
+</script>
+
+</body></html>
