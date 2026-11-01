@@ -4,3 +4,6 @@ __pycache__/
 .DS_Store
 .orig/
 .claude/
+
+# Local only: project context
+CONTEXT.md
